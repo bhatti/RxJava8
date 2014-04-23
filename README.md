@@ -36,7 +36,7 @@ gradle jar
 ```java 
    List<String> names = Arrays.asList("Erica", "Matt", "John", "Mike", "Scott", "Alex", "Jeff", "Brad"); 
    Observable.from(names).subscribe(System.out::println, Throwable::printStackTrace, () -> System.out.println("done"));
-```java 
+```
 
 
 ### Creating Observable from Stream
@@ -44,21 +44,21 @@ gradle jar
    Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", "Scott", "Alex", "Jeff", "Brad"); 
    // note third argument for onComplete is optional
    Observable.from(names).subscribe(name -> System.out.println(name), error -> error.printStackTrace());
-```java 
+```
 
 
 ### Creating Observable from Iterator
 ```java 
    Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", "Scott", "Alex", "Jeff", "Brad"); 
    Observable.from(names.iterator()).subscribe(name -> System.out.println(name), error -> error.printStackTrace());
-```java 
+```
 
 
 ### Creating Observable from Spliterator
 ```java 
    List<String> names = Arrays.asList("Erica", "Matt", "John", "Mike", "Scott", "Alex", "Jeff", "Brad"); 
    Observable.from(names.spliterator()).subscribe(System.out::println, Throwable::printStackTrace);
-```java 
+```
 
 
 ### Creating Observable from a single object
@@ -67,7 +67,7 @@ gradle jar
    Observable.just("value").subscribe(v -> System.out.println(v), error -> error.printStackTrace());
    // if a single object is collection, it would be treated as a single entity, e.g.
    Observable.just(Arrays.asList(1, 2, 3)).subscribe( num -> System.out.println(num), error -> error.printStackTrace());
-```java 
+```
 
 
 ### Creating Observable from a consumer function
@@ -78,32 +78,32 @@ gradle jar
       }
       observer.onCompleted();
    }).subscribe(System.out::println, Throwable::printStackTrace);
-```java 
+```
 
 ### Creating Observable from range
 ```java 
    // Creates range of numbers starting at from until it reaches to exclusively
    Observable.range(4, 8).subscribe(num -> System.out.println(num), error -> error.printStackTrace());
    // will print 4, 5, 6, 7
-```java 
+```
 
 
 ### Creating empty Observable - it would call onCompleted right away
 ```java 
    Observable.empty().subscribe(System.out::println, Throwable::printStackTrace, () -> System.out.println("Completed"));
-```java 
+```
 
 
 ### Creating error Observable - it would call onError right away
 ```java 
    Observable.onError(new Exception("error")).subscribe(System.out::println, Throwable::printStackTrace);
-```java 
+```
 
 
 ### Creating never Observable - it would not call any of call back methods
 ```java 
    Observable.never().subscribe(System.out::println, Throwable::printStackTrace);
-```java 
+```
 
 
 
@@ -114,20 +114,20 @@ By default Observable notifies observer asynchronously using thread-pool schedul
 ```java 
    Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", "Scott", "Alex", "Jeff", "Brad"); 
    Observable.from(names).subscribeOn(Scheduler.getThreadPoolScheduler()).subscribe(System.out::println, Throwable::printStackTrace);
-```java 
+```
 
 #### Using new-thread scheduler - it will create new thread 
 ```java 
    Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", "Scott", "Alex", "Jeff", "Brad"); 
    Observable.from(names).subscribeOn(Scheduler.getNewThreadScheduler()).subscribe(System.out::println, Throwable::printStackTrace);
-```java 
+```
 
 #### Using timer thread with interval - it will notify at each interval
 ```java 
    Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", "Scott", "Alex", "Jeff", "Brad"); 
    Observable.from(names).subscribeOn(Scheduler.getTimerSchedulerWithMilliInterval(1000)).subscribe(System.out::println, Throwable::printStackTrace);
    // this will print each name every second
-```java 
+```
 
 
 ### Transforming 
@@ -136,7 +136,7 @@ Observables keep sequence of items as streams and they support map/flatMap opera
 ```java 
    Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", "Scott", "Alex", "Jeff", "Brad"); 
    Observable.from(names).map(name -> name.hashCode()).subscribe(System.out::println, Throwable::printStackTrace);
-```java 
+```
 
 
 ### FlatMap
@@ -144,7 +144,7 @@ FlatMap merges list of lists into a single list when doing transformation, e.g.
 ```java 
    Stream<List<Integer>> integerListStream = Stream.of( Arrays.asList(1, 2), Arrays.asList(3, 4), Arrays.asList(5));
    Observable.from(integerListStream).flatMap(integerList -> integerList.stream()).subscribe(System.out::println, Throwable::printStackTrace);
-```java 
+```
 
 ### Filtering
 Observables supports basic filtering support as provided by Java Streams, e.g.
@@ -153,7 +153,7 @@ Observables supports basic filtering support as provided by Java Streams, e.g.
    Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", "Scott", "Alex", "Jeff", "Brad"); 
    Observable.from(names).filter(name -> name.startsWith("M")).subscribe(System.out::println, Throwable::printStackTrace);
    // This will only print Matt and Mike
-```java 
+```
 
 
 ### Skip
@@ -161,14 +161,14 @@ Observables supports basic filtering support as provided by Java Streams, e.g.
    Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", "Scott", "Alex", "Jeff", "Brad"); 
    Observable.from(names).skip(2).subscribe(System.out::println, Throwable::printStackTrace);
    // This will skip Erica and John
-```java 
+```
 
 ### Limit
 ```java 
    Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", "Scott", "Alex", "Jeff", "Brad"); 
    Observable.from(names).limit(2).subscribe(System.out::println, Throwable::printStackTrace);
    // This will only print first two names
-```java 
+```
 
 
 ### distinct
@@ -176,7 +176,7 @@ Observables supports basic filtering support as provided by Java Streams, e.g.
    Stream<String> names = Stream.of("Erica", "Matt", "John", "Erica");
    Observable.from(names).distinct.subscribe(System.out::println, Throwable::printStackTrace);
    // This will print Erica only once
-```java 
+```
 
 
 
@@ -186,7 +186,7 @@ Observables supports basic filtering support as provided by Java Streams, e.g.
    Observable<Integer> observable2 = Observable.from(Stream.of(4, 5, 6));
    observable1.merge(observable2).subscribe(System.out::println, Throwable::printStackTrace);
    // This will print 1, 2, 3, 4, 5, 6
-```java 
+```
 
 
 
