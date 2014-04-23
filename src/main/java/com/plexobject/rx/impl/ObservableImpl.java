@@ -142,4 +142,12 @@ public class ObservableImpl<T> implements Observable<T> {
         this.stream = stream.sorted(comparator);
         return this;
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Observable<T> merge(Observable<? extends T> other) {
+        this.stream = Stream.concat(this.stream,
+                ((ObservableImpl<T>) other).stream);
+        return this;
+    }
 }

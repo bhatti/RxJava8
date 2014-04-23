@@ -1,0 +1,11 @@
+add Future
+add Iterable
+add repeat - repeat sequence over and over again 
+add defer - creates fresh observable for each subscription
+add generate - similar to Supplier that generates sequence of items
+add groupBy/groupByUntil 
+add takeLast/last/take/first/elementAt/throttle/timeout
+add merge/zip/and/then/when observable 
+add error handling
+add start, toAsync, asyncFuture, fromCallable, fromRunnable
+add subject, asyncSubject

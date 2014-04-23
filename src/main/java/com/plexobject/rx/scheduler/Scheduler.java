@@ -17,8 +17,8 @@ public interface Scheduler extends Disposable {
         return new ImmediateScheduler();
     }
 
-    public static Scheduler getThreadScheduler() {
-        return new ThreadScheduler();
+    public static Scheduler getNewThreadScheduler() {
+        return new NewThreadScheduler();
     }
 
     public static Scheduler getTimerSchedulerWithMilliInterval(long interval) {

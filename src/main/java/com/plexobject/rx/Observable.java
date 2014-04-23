@@ -16,7 +16,7 @@ import com.plexobject.rx.impl.ObservableDelegate;
 import com.plexobject.rx.impl.ObservableImpl;
 import com.plexobject.rx.impl.ObservableNever;
 import com.plexobject.rx.scheduler.Scheduler;
-import com.plexobject.rx.util.SpliteratorFromIterator;
+import com.plexobject.rx.util.SpliteratorAdapter;
 
 public interface Observable<T> {
     public static <T> Observable<T> create(Consumer<Observer<T>> consumer) {
@@ -31,8 +31,8 @@ public interface Observable<T> {
 
     public static <T> Observable<T> from(Iterator<T> it) {
         Objects.requireNonNull(it);
-        return new ObservableImpl<T>(
-                new SpliteratorFromIterator<T>(it).toStream(), null);
+        return new ObservableImpl<T>(new SpliteratorAdapter<T>(it).toStream(),
+                null);
     }
 
     public static <T> Observable<T> from(Spliterator<T> it) {
@@ -59,6 +59,13 @@ public interface Observable<T> {
         return new ObservableImpl<T>(Stream.<T> of(), error);
     }
 
+    /**
+     * Creates range of numbers starting at from until it reaches to exclusively
+     * 
+     * @param from
+     * @param to
+     * @return
+     */
     public static Observable<Integer> range(int from, int to) {
         return new ObservableImpl<Integer>(IntStream.range(from, to).boxed(),
                 null);
@@ -87,6 +94,8 @@ public interface Observable<T> {
     Observable<T> sorted(Comparator<? super T> comparator);
 
     Observable<T> subscribeOn(Scheduler scheduler);
+
+    Observable<T> merge(Observable<? extends T> other);
 
     Subscription subscribe(Consumer<T> onNext, Consumer<Throwable> onError,
             OnCompletion onCompletion);

@@ -95,4 +95,9 @@ public class ObservableDelegate<T> implements Observable<T> {
     public Observable<T> sorted(Comparator<? super T> comparator) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public Observable<T> merge(Observable<? extends T> other) {
+        throw new UnsupportedOperationException();
+    }
 }

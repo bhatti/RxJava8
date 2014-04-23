@@ -6,10 +6,10 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class SpliteratorFromIterator<T> implements Spliterator<T> {
+public class SpliteratorAdapter<T> implements Spliterator<T> {
     private final Iterator<T> it;
 
-    public SpliteratorFromIterator(Iterator<T> it) {
+    public SpliteratorAdapter(Iterator<T> it) {
         this.it = it;
     }
 

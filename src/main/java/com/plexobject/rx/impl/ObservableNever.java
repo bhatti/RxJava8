@@ -35,6 +35,11 @@ public class ObservableNever<T> implements Observable<T> {
     }
 
     @Override
+    public Observable<T> merge(Observable<? extends T> other) {
+        return this;
+    }
+
+    @Override
     public Observable<T> filter(Predicate<? super T> predicate) {
         return this;
     }

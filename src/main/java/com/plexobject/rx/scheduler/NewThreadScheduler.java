@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import com.plexobject.rx.Disposable;
 import com.plexobject.rx.impl.SubscriptionObserver;
 
-public class ThreadScheduler implements Scheduler, Disposable {
+public class NewThreadScheduler implements Scheduler, Disposable {
     final ExecutorService defaulExecutor = Executors.newSingleThreadExecutor();
     private boolean shutdown;
 

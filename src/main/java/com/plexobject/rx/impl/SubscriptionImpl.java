@@ -8,7 +8,7 @@ public class SubscriptionImpl<T> implements SubscriptionObserver<T> {
     private final Consumer<T> onNext;
     private final Consumer<Throwable> onError;
     private final OnCompletion onCompletion;
-    private boolean subscribed;
+    private volatile boolean subscribed;
 
     public SubscriptionImpl(Consumer<T> onNext, Consumer<Throwable> onError,
             OnCompletion onCompletion) {

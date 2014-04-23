@@ -20,7 +20,7 @@ repositories {
     mavenCentral()
 }
 
-version = '1.0'
+version = '0.1'
 jar {
     manifest {
         attributes 'Implementation-Title': 'RxJava8', 'Implementation-Version': version
