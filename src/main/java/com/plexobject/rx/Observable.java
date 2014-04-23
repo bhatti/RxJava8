@@ -19,77 +19,77 @@ import com.plexobject.rx.scheduler.Scheduler;
 import com.plexobject.rx.util.SpliteratorFromIterator;
 
 public interface Observable<T> {
-	public static <T> Observable<T> create(Consumer<Observer<T>> consumer) {
-		Objects.requireNonNull(consumer);
-		return new ObservableDelegate<T>(consumer);
-	}
+    public static <T> Observable<T> create(Consumer<Observer<T>> consumer) {
+        Objects.requireNonNull(consumer);
+        return new ObservableDelegate<T>(consumer);
+    }
 
-	public static <T> Observable<T> from(Stream<T> stream) {
-		Objects.requireNonNull(stream);
-		return new ObservableImpl<T>(stream, null);
-	}
+    public static <T> Observable<T> from(Stream<T> stream) {
+        Objects.requireNonNull(stream);
+        return new ObservableImpl<T>(stream, null);
+    }
 
-	public static <T> Observable<T> from(Iterator<T> it) {
-		Objects.requireNonNull(it);
-		return new ObservableImpl<T>(
-		        new SpliteratorFromIterator<T>(it).toStream(), null);
-	}
+    public static <T> Observable<T> from(Iterator<T> it) {
+        Objects.requireNonNull(it);
+        return new ObservableImpl<T>(
+                new SpliteratorFromIterator<T>(it).toStream(), null);
+    }
 
-	public static <T> Observable<T> from(Spliterator<T> it) {
-		Objects.requireNonNull(it);
-		return new ObservableImpl<T>(StreamSupport.stream(it, false), null);
-	}
+    public static <T> Observable<T> from(Spliterator<T> it) {
+        Objects.requireNonNull(it);
+        return new ObservableImpl<T>(StreamSupport.stream(it, false), null);
+    }
 
-	public static <T> Observable<T> from(Collection<T> c) {
-		Objects.requireNonNull(c);
-		return new ObservableImpl<T>(c.stream(), null);
-	}
+    public static <T> Observable<T> from(Collection<T> c) {
+        Objects.requireNonNull(c);
+        return new ObservableImpl<T>(c.stream(), null);
+    }
 
-	public static <T> Observable<T> empty() {
-		return new ObservableImpl<T>(Stream.<T> of(), null);
-	}
+    public static <T> Observable<T> empty() {
+        return new ObservableImpl<T>(Stream.<T> of(), null);
+    }
 
-	public static <T> Observable<T> just(T obj) {
-		Objects.requireNonNull(obj);
-		return new ObservableImpl<T>(Stream.<T> of(obj), null);
-	}
+    public static <T> Observable<T> just(T obj) {
+        Objects.requireNonNull(obj);
+        return new ObservableImpl<T>(Stream.<T> of(obj), null);
+    }
 
-	public static <T> Observable<T> throwing(Throwable error) {
-		Objects.requireNonNull(error);
-		return new ObservableImpl<T>(Stream.<T> of(), error);
-	}
+    public static <T> Observable<T> throwing(Throwable error) {
+        Objects.requireNonNull(error);
+        return new ObservableImpl<T>(Stream.<T> of(), error);
+    }
 
-	public static Observable<Integer> range(int from, int to) {
-		return new ObservableImpl<Integer>(IntStream.range(from, to).boxed(),
-		        null);
-	}
+    public static Observable<Integer> range(int from, int to) {
+        return new ObservableImpl<Integer>(IntStream.range(from, to).boxed(),
+                null);
+    }
 
-	// ignores subscription and thread get stuck in synchronous mode
-	public static <T> Observable<T> never() {
-		return new ObservableNever<T>();
-	}
+    // ignores subscription and thread get stuck in synchronous mode
+    public static <T> Observable<T> never() {
+        return new ObservableNever<T>();
+    }
 
-	Observable<T> distinct();
+    Observable<T> distinct();
 
-	Observable<T> filter(Predicate<? super T> predicate);
+    Observable<T> filter(Predicate<? super T> predicate);
 
-	<R> Observable<R> map(Function<? super T, ? extends R> mapper);
+    <R> Observable<R> map(Function<? super T, ? extends R> mapper);
 
-	<R> Observable<R> flatMap(
-	        Function<? super T, ? extends Stream<? extends R>> mapper);
+    <R> Observable<R> flatMap(
+            Function<? super T, ? extends Stream<? extends R>> mapper);
 
-	Observable<T> limit(long maxSize);
+    Observable<T> limit(long maxSize);
 
-	Observable<T> skip(long n);
+    Observable<T> skip(long n);
 
-	Observable<T> sorted();
+    Observable<T> sorted();
 
-	Observable<T> sorted(Comparator<? super T> comparator);
+    Observable<T> sorted(Comparator<? super T> comparator);
 
-	Observable<T> subscribeOn(Scheduler scheduler);
+    Observable<T> subscribeOn(Scheduler scheduler);
 
-	Subscription subscribe(Consumer<T> onNext, Consumer<Throwable> onError,
-	        OnCompletion onCompletion);
+    Subscription subscribe(Consumer<T> onNext, Consumer<Throwable> onError,
+            OnCompletion onCompletion);
 
-	Subscription subscribe(Consumer<T> onNext, Consumer<Throwable> onError);
+    Subscription subscribe(Consumer<T> onNext, Consumer<Throwable> onError);
 }

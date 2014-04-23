@@ -7,36 +7,36 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class SpliteratorFromIterator<T> implements Spliterator<T> {
-	private final Iterator<T> it;
+    private final Iterator<T> it;
 
-	public SpliteratorFromIterator(Iterator<T> it) {
-		this.it = it;
-	}
+    public SpliteratorFromIterator(Iterator<T> it) {
+        this.it = it;
+    }
 
-	@Override
-	public boolean tryAdvance(Consumer<? super T> action) {
-		if (it.hasNext()) {
-			action.accept(it.next());
-		}
-		return it.hasNext();
-	}
+    @Override
+    public boolean tryAdvance(Consumer<? super T> action) {
+        if (it.hasNext()) {
+            action.accept(it.next());
+        }
+        return it.hasNext();
+    }
 
-	@Override
-	public Spliterator<T> trySplit() {
-		return null;
-	}
+    @Override
+    public Spliterator<T> trySplit() {
+        return null;
+    }
 
-	@Override
-	public long estimateSize() {
-		return Integer.MAX_VALUE;
-	}
+    @Override
+    public long estimateSize() {
+        return Integer.MAX_VALUE;
+    }
 
-	@Override
-	public int characteristics() {
-		return Spliterator.IMMUTABLE;
-	}
+    @Override
+    public int characteristics() {
+        return Spliterator.IMMUTABLE;
+    }
 
-	public Stream<T> toStream() {
-		return StreamSupport.stream(this, false);
-	}
+    public Stream<T> toStream() {
+        return StreamSupport.stream(this, false);
+    }
 }
