@@ -8,11 +8,18 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import com.plexobject.rx.Observable;
-import com.plexobject.rx.Observer;
 import com.plexobject.rx.OnCompletion;
 import com.plexobject.rx.Subscription;
 import com.plexobject.rx.scheduler.Scheduler;
 
+/**
+ * This is implementation of Observable that uses user-specified consumer
+ * function to notify subscriber for data and errors
+ * 
+ * @author Shahzad Bhatti
+ *
+ * @param <T>
+ */
 public class ObservableDelegate<T> implements Observable<T> {
     private Consumer<Observer<T>> consumer;
 
@@ -20,15 +27,23 @@ public class ObservableDelegate<T> implements Observable<T> {
         this.consumer = consumer;
     }
 
+    /**
+     * This method subscribes user to receive data
+     */
     @Override
     public Subscription subscribe(Consumer<T> onNext,
             Consumer<Throwable> onError) {
         return subscribe(onNext, onError, null);
     }
 
+    /**
+     * This method subscribes user to receive data Note: onNext and onError are
+     * required but onCompletion is optional
+     */
     public synchronized Subscription subscribe(Consumer<T> onNext,
             Consumer<Throwable> onError, OnCompletion onCompletion) {
         Objects.requireNonNull(onNext);
+        Objects.requireNonNull(onError);
         SubscriptionObserver<T> subscription = new SubscriptionImpl<T>(onNext,
                 onError, onCompletion);
         consumer.accept(new Observer<T>() {
@@ -50,52 +65,90 @@ public class ObservableDelegate<T> implements Observable<T> {
         return subscription;
     }
 
+    /**
+     * This method allows user to specify scheduler but it's not supported in
+     * this implementation.
+     */
     @Override
     public Observable<T> subscribeOn(Scheduler scheduler) {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
+    /**
+     * This method removes duplicates but it's not supported in this
+     * implementation.
+     */
     @Override
     public Observable<T> distinct() {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * This method filters objects but it's not supported in this
+     * implementation.
+     */
     @Override
     public Observable<T> filter(Predicate<? super T> predicate) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * This method transforms objects but it's not supported in this
+     * implementation.
+     */
     @Override
     public <R> Observable<R> map(Function<? super T, ? extends R> mapper) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * This method transforms objects but it's not supported in this
+     * implementation.
+     */
     @Override
     public <R> Observable<R> flatMap(
             Function<? super T, ? extends Stream<? extends R>> mapper) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * This method limits objects that can be sent but it's not supported in
+     * this implementation.
+     */
     @Override
     public Observable<T> limit(long maxSize) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * This method skips first N objects but it's not supported in this
+     * implementation.
+     */
     @Override
     public Observable<T> skip(long n) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * This method sorts objects but it's not supported in this implementation.
+     */
     @Override
     public Observable<T> sorted() {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * This method sorts objects but it's not supported in this implementation.
+     */
     @Override
     public Observable<T> sorted(Comparator<? super T> comparator) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * This method merges other Observable but it's not supported in this
+     * implementation.
+     */
     @Override
     public Observable<T> merge(Observable<? extends T> other) {
         throw new UnsupportedOperationException();

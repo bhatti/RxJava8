@@ -10,6 +10,13 @@ import org.slf4j.LoggerFactory;
 import com.plexobject.rx.Disposable;
 import com.plexobject.rx.impl.SubscriptionObserver;
 
+/**
+ * This implementation of Scheduler uses thread-pool for background processing
+ * that pushes incoming data to user.
+ * 
+ * @author Shahzad Bhatti
+ *
+ */
 public class ThreadPoolScheduler implements Scheduler, Disposable {
     @SuppressWarnings("unused")
     private static final Logger logger = LoggerFactory

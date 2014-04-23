@@ -4,6 +4,14 @@ import java.util.function.Consumer;
 
 import com.plexobject.rx.OnCompletion;
 
+/**
+ * This class keeps track of user subscription including callback functions.
+ * This also allows user to unsubcribe from receiving data.
+ * 
+ * @author Shahzad Bhatti
+ *
+ * @param <T>
+ */
 public class SubscriptionImpl<T> implements SubscriptionObserver<T> {
     private final Consumer<T> onNext;
     private final Consumer<Throwable> onError;

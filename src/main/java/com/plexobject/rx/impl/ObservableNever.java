@@ -11,6 +11,14 @@ import com.plexobject.rx.OnCompletion;
 import com.plexobject.rx.Subscription;
 import com.plexobject.rx.scheduler.Scheduler;
 
+/**
+ * This implementation of Observable is used to ignore subscription. This won't
+ * call any of callback methods of subscriber.
+ * 
+ * @author Shahzad Bhatti
+ *
+ * @param <T>
+ */
 public class ObservableNever<T> implements Observable<T> {
     @Override
     public Subscription subscribe(Consumer<T> onNext,

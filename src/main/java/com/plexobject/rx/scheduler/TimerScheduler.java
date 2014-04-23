@@ -7,6 +7,12 @@ import java.util.function.Consumer;
 import com.plexobject.rx.Disposable;
 import com.plexobject.rx.impl.SubscriptionObserver;
 
+/**
+ * This implementation of Scheduler notifies subscriber at given interval
+ * 
+ * @author Shahzad Bhatti
+ *
+ */
 public class TimerScheduler implements Scheduler, Disposable {
     private final Timer timer = new Timer();
     private final long interval;

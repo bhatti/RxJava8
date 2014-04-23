@@ -6,6 +6,13 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * This is helper class that allows creating spliterator from an iterator
+ * 
+ * @author Shahzad Bhatti
+ *
+ * @param <T>
+ */
 public class SpliteratorAdapter<T> implements Spliterator<T> {
     private final Iterator<T> it;
 

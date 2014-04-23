@@ -5,6 +5,13 @@ import java.util.function.Consumer;
 import com.plexobject.rx.Disposable;
 import com.plexobject.rx.impl.SubscriptionObserver;
 
+/**
+ * This implementation of scheduler uses same thread to notify subscriber. This
+ * should not be used for large data as it doesn't allow user to unsubscribe.
+ * 
+ * @author Shahzad Bhatti
+ *
+ */
 public class ImmediateScheduler implements Scheduler, Disposable {
     private boolean shutdown;
 

@@ -5,9 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import org.junit.After;
@@ -21,8 +19,8 @@ public class ObservableTest {
     private final List<String> names = Arrays.asList("Erica", "Matt", "John",
             "Mike", "Scott", "Alex", "Jeff", "Brad");
 
-    private Set<Object> onNext = new HashSet<>();
-    private Set<Throwable> onErrors = new HashSet<>();
+    private List<Object> onNext = new ArrayList<>();
+    private List<Throwable> onErrors = new ArrayList<>();
     private int onCompletion;
     private Subscription subscription;
 
@@ -198,6 +196,8 @@ public class ObservableTest {
         //
         // Observable.range(4, 8).subscribe(num -> System.out.println(num),
         // error -> error.printStackTrace());
+        Observable.throwing(new Error("test error")).subscribe(
+                System.out::println, error -> System.err.println(error));
     }
 
     @Test

@@ -5,6 +5,12 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * This is a helper class for creating infinite natural numbers
+ * 
+ * @author Shahzad Bhatti
+ *
+ */
 public class NatsSpliterator implements Spliterator<Integer> {
     private int count;
 
