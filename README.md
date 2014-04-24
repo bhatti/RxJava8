@@ -32,6 +32,13 @@ gradle jar
 
 ##How To Guide
 
+### Creating Observable from Array of objects
+```java 
+   Observable.from("Erica", "Matt", "John", "Mike").subscribe(System.out::println, 
+      Throwable::printStackTrace, () -> System.out.println("done"));
+```
+
+
 ### Creating Observable from Collection
 ```java 
    List<String> names = Arrays.asList("Erica", "Matt", "John", "Mike", 
@@ -113,12 +120,6 @@ gradle jar
 ```
 
 
-### Creating error Observable - it would call onError right away
-```java 
-   Observable.onError(new Exception("error")).subscribe(System.out::println, 
-      Throwable::printStackTrace);
-```
-
 
 ### Creating never Observable - it would not call any of call back methods
 ```java 
@@ -132,25 +133,28 @@ By default Observable notifies observer asynchronously using thread-pool schedul
 
 #### Using thread-pool scheduler
 ```java 
-   Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", 
-      "Scott", "Alex", "Jeff", "Brad"); 
-   Observable.from(names).subscribeOn(Scheduler.getThreadPoolScheduler()).
+   Observable.from("Erica", "Matt", "John").subscribeOn(Scheduler.getThreadPoolScheduler()).
       subscribe(System.out::println, Throwable::printStackTrace);
 ```
 
 #### Using new-thread scheduler - it will create new thread 
 ```java 
-   Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", 
-      "Scott", "Alex", "Jeff", "Brad"); 
-   Observable.from(names).subscribeOn(Scheduler.getNewThreadScheduler()).
+   Observable.from("Erica", "Matt", "John").subscribeOn(Scheduler.getNewThreadScheduler()).
       subscribe(System.out::println, Throwable::printStackTrace);
 ```
 
 #### Using timer thread with interval - it will notify at each interval
 ```java 
-   Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", 
-      "Scott", "Alex", "Jeff", "Brad"); 
-   Observable.from(names).subscribeOn(Scheduler.getTimerSchedulerWithMilliInterval(1000)).
+   Observable.from("Erica", "Matt", "John").subscribeOn(Scheduler.getTimerSchedulerWithMilliInterval(1000)).
+      subscribe(System.out::println, Throwable::printStackTrace);
+   // this will print each name every second
+```
+
+#### Using immediate scheduler 
+This scheduler will call callback functions right away on the same thread. You can use this scheduler for a smaller amount of data that you want to consume synchronously. However, you cannot unsubscribe as it runs on the same thread.
+```java 
+   Observable.from("Erica", "Matt", "John").
+      subscribeOn(Scheduler.getThreadPoolSchedulergetImmediateScheduler()).
       subscribe(System.out::println, Throwable::printStackTrace);
    // this will print each name every second
 ```
@@ -160,9 +164,7 @@ By default Observable notifies observer asynchronously using thread-pool schedul
 Observables keep sequence of items as streams and they support map/flatMap operation as supported by standard Stream class, e.g.
 ### Map
 ```java 
-   Stream<String> names = Stream.of("Erica", "Matt", "John", 
-      "Mike", "Scott", "Alex", "Jeff", "Brad"); 
-   Observable.from(names).map(name -> name.hashCode()).
+   Observable.from("Erica", "Matt", "John").map(name -> name.hashCode()).
       subscribe(System.out::println, Throwable::printStackTrace);
 ```
 
@@ -180,9 +182,8 @@ FlatMap merges list of lists into a single list when doing transformation, e.g.
 Observables supports basic filtering support as provided by Java Streams, e.g.
 ### Filter
 ```java 
-   Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", 
-      "Scott", "Alex", "Jeff", "Brad"); 
-   Observable.from(names).filter(name -> name.startsWith("M")).
+   Observable.from("Erica", "Matt", "John", "Mike", "Scott", 
+      "Alex", "Jeff", "Brad").filter(name -> name.startsWith("M")).
       subscribe(System.out::println, Throwable::printStackTrace);
    // This will only print Matt and Mike
 ```
@@ -192,7 +193,7 @@ Observables supports basic filtering support as provided by Java Streams, e.g.
 ```java 
    Stream<String> names = Stream.of("Erica", "Matt", "John", "Mike", 
       "Scott", "Alex", "Jeff", "Brad"); 
-   Observable.from(names).skip(2).subscribe(System.out::println, 
+   Observable.from(names).skip().subscribe(System.out::println, 
       Throwable::printStackTrace);
    // This will skip Erica and John
 ```

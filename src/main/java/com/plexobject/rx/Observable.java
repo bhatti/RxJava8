@@ -42,6 +42,17 @@ public interface Observable<T> {
     }
 
     /**
+     * This method creates Observable from a array of objects
+     * 
+     * @param stream
+     * @return instance of Observable
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Observable<T> from(T... values) {
+        return new ObservableImpl<T>(Stream.of(values), null);
+    }
+
+    /**
      * This method creates Observable from a given stream
      * 
      * @param stream

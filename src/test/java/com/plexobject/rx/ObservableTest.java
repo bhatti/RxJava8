@@ -124,6 +124,18 @@ public class ObservableTest {
     }
 
     @Test
+    public void testSubscribeFromArray() throws Exception {
+        Observable<String> observable = Observable.from("one", "two", "three",
+                "four", "five").distinct();
+        //
+        setupCallbackWithCompletion(observable, false, true);
+        //
+        assertEquals(5, onNext.size());
+        assertEquals(0, onErrors.size());
+        assertEquals(1, onCompletion);
+    }
+
+    @Test
     public void testSubscribeMap() throws Exception {
         List<Integer> hashes = new ArrayList<>();
 
@@ -221,7 +233,7 @@ public class ObservableTest {
             //
             setupCallbackWithCompletion(observable, i % 2 == 0, true);
             //
-            assertEquals("unexpected size for " + (i % 2 == 0), names.size(),
+            assertEquals("unexpected size for " + i, names.size(),
                     onNext.size());
             assertEquals(0, onErrors.size());
             assertEquals("i " + i, 1, onCompletion);
@@ -296,7 +308,7 @@ public class ObservableTest {
         subscription = observable.subscribe(name -> onNext.add(name),
                 error -> onErrors.add(error), () -> onCompletion++);
         if (!immediate && sleep) {
-            Thread.sleep(10);
+            Thread.sleep(100);
         }
         return observable;
     }
@@ -313,7 +325,7 @@ public class ObservableTest {
         subscription = observable.subscribe(name -> onNext.add(name),
                 error -> onErrors.add(error));
         if (!immediate && sleep) {
-            Thread.sleep(200);
+            Thread.sleep(100);
         }
         return observable;
     }
