@@ -227,8 +227,12 @@ Observables supports basic filtering support as provided by Java Streams, e.g.
    // This will print 1, 2, 3, 4, 5, 6
 ```
 
+## API Doc and Samples
+<ul>
+  <li><a href="http://bhatti.github.io/RxJava8/javadoc/">Java Doc</a>
+  <li><a href="http://bhatti.github.io/RxJava8/">Getting Started</a>
+</ul>
 
-
-## Contact
+## Support or Contact
   Email bhatti AT plexobject DOT com for any questions or suggestions.
 
