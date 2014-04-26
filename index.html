@@ -32,31 +32,250 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<a name="welcome" class="anchor" href="#welcome"><span class="octicon octicon-link"></span></a>Welcome to RxJava.</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>Implementation of core features of reactive extension using Java 8. It is inspired by Microsoft's Rx library at <a href="https://rx.codeplex.com/">https://rx.codeplex.com/</a>, but it doesn't support all of their APIs.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<h2>
+<a name="user-content-building" class="anchor" href="#building"><span class="octicon octicon-link"></span></a>Building</h2>
+
+<ul>
+<li>Download and install <a href="http://www.gradle.org/downloads">Gradle</a>.</li>
+<li>Download and install <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">Java 8</a>.</li>
+<li>Checkout code using </li>
+</ul><pre><code>git clone git@github.com:bhatti/RxJava8.git
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<ul>
+<li>Compile and build jar file using</li>
+</ul><pre><code>./gradlew jar
+</code></pre>
+
+<ul>
+<li>For now, you will have to copy and add jar file manually in your application.</li>
+</ul><h2>
+<a name="user-content-version" class="anchor" href="#version"><span class="octicon octicon-link"></span></a>Version</h2>
+
+<ul>
+<li>0.1 : experimental</li>
+</ul><h2>
+<a name="user-content-license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<ul>
+<li>MIT</li>
+</ul><h2>
+<a name="user-content-how-to-guide" class="anchor" href="#how-to-guide"><span class="octicon octicon-link"></span></a>How To Guide</h2>
 
 <h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a name="user-content-creating-observable-from-array-of-objects" class="anchor" href="#creating-observable-from-array-of-objects"><span class="octicon octicon-link"></span></a>Creating Observable from Array of objects</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">,</span> <span class="s">"Mike"</span><span class="o">).</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> 
+      <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"done"</span><span class="o">));</span>
+</pre></div>
 
 <h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<a name="user-content-creating-observable-from-collection" class="anchor" href="#creating-observable-from-collection"><span class="octicon octicon-link"></span></a>Creating Observable from Collection</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<div class="highlight highlight-java"><pre>   <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">,</span> <span class="s">"Mike"</span><span class="o">,</span> 
+      <span class="s">"Scott"</span><span class="o">,</span> <span class="s">"Alex"</span><span class="o">,</span> <span class="s">"Jeff"</span><span class="o">,</span> <span class="s">"Brad"</span><span class="o">);</span> 
+   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">names</span><span class="o">).</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> 
+      <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"done"</span><span class="o">));</span>
+</pre></div>
+
+<h3>
+<a name="user-content-creating-observable-from-stream" class="anchor" href="#creating-observable-from-stream"><span class="octicon octicon-link"></span></a>Creating Observable from Stream</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Stream</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">,</span> <span class="s">"Mike"</span><span class="o">,</span> 
+      <span class="s">"Scott"</span><span class="o">,</span> <span class="s">"Alex"</span><span class="o">,</span> <span class="s">"Jeff"</span><span class="o">,</span> <span class="s">"Brad"</span><span class="o">);</span> 
+   <span class="c1">// note third argument for onComplete is optional</span>
+   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">names</span><span class="o">).</span><span class="na">subscribe</span><span class="o">(</span><span class="n">name</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">name</span><span class="o">),</span> 
+      <span class="n">error</span> <span class="o">-&gt;</span> <span class="n">error</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">());</span>
+</pre></div>
+
+<h3>
+<a name="user-content-creating-observable-from-iterator" class="anchor" href="#creating-observable-from-iterator"><span class="octicon octicon-link"></span></a>Creating Observable from Iterator</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Stream</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">,</span> <span class="s">"Mike"</span><span class="o">,</span> 
+      <span class="s">"Scott"</span><span class="o">,</span> <span class="s">"Alex"</span><span class="o">,</span> <span class="s">"Jeff"</span><span class="o">,</span> <span class="s">"Brad"</span><span class="o">);</span> 
+   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">names</span><span class="o">.</span><span class="na">iterator</span><span class="o">()).</span><span class="na">subscribe</span><span class="o">(</span><span class="n">name</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">name</span><span class="o">),</span> 
+      <span class="n">error</span> <span class="o">-&gt;</span> <span class="n">error</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">());</span>
+</pre></div>
+
+<h3>
+<a name="user-content-creating-observable-from-spliterator" class="anchor" href="#creating-observable-from-spliterator"><span class="octicon octicon-link"></span></a>Creating Observable from Spliterator</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">,</span> <span class="s">"Mike"</span><span class="o">,</span> 
+      <span class="s">"Scott"</span><span class="o">,</span> <span class="s">"Alex"</span><span class="o">,</span> <span class="s">"Jeff"</span><span class="o">,</span> <span class="s">"Brad"</span><span class="o">);</span> 
+   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">names</span><span class="o">.</span><span class="na">spliterator</span><span class="o">()).</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> 
+      <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+</pre></div>
+
+<h3>
+<a name="user-content-creating-observable-from-a-single-object" class="anchor" href="#creating-observable-from-a-single-object"><span class="octicon octicon-link"></span></a>Creating Observable from a single object</h3>
+
+<div class="highlight highlight-java"><pre>
+   <span class="n">Observable</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="s">"value"</span><span class="o">).</span><span class="na">subscribe</span><span class="o">(</span><span class="n">v</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">v</span><span class="o">),</span> 
+      <span class="n">error</span> <span class="o">-&gt;</span> <span class="n">error</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">());</span>
+   <span class="c1">// if a single object is collection, it would be treated as a single entity, e.g.</span>
+   <span class="n">Observable</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">)).</span><span class="na">subscribe</span><span class="o">(</span> <span class="n">num</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">num</span><span class="o">),</span> 
+      <span class="n">error</span> <span class="o">-&gt;</span> <span class="n">error</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">());</span>
+</pre></div>
+
+<h3>
+<a name="user-content-creating-observable-for-an-error" class="anchor" href="#creating-observable-for-an-error"><span class="octicon octicon-link"></span></a>Creating Observable for an error</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">throwing</span><span class="o">(</span><span class="k">new</span> <span class="n">Error</span><span class="o">(</span><span class="s">"test error"</span><span class="o">)).</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> 
+      <span class="n">error</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">error</span><span class="o">));</span>
+   <span class="c1">// this will print error </span>
+</pre></div>
+
+<h3>
+<a name="user-content-creating-observable-from-a-consumer-function" class="anchor" href="#creating-observable-from-a-consumer-function"><span class="octicon octicon-link"></span></a>Creating Observable from a consumer function</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">observer</span> <span class="o">-&gt;</span> <span class="o">{</span>
+      <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">name</span> <span class="o">:</span> <span class="n">names</span><span class="o">)</span> <span class="o">{</span>
+         <span class="n">observer</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+      <span class="o">}</span>
+      <span class="n">observer</span><span class="o">.</span><span class="na">onCompleted</span><span class="o">();</span>
+   <span class="o">}).</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+</pre></div>
+
+<h3>
+<a name="user-content-creating-observable-from-range" class="anchor" href="#creating-observable-from-range"><span class="octicon octicon-link"></span></a>Creating Observable from range</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="c1">// Creates range of numbers starting at from until it reaches to exclusively</span>
+   <span class="n">Observable</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="mi">8</span><span class="o">).</span><span class="na">subscribe</span><span class="o">(</span><span class="n">num</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">num</span><span class="o">),</span> 
+      <span class="n">error</span> <span class="o">-&gt;</span> <span class="n">error</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">());</span>
+   <span class="c1">// will print 4, 5, 6, 7</span>
+</pre></div>
+
+<h3>
+<a name="user-content-creating-empty-observable---it-would-call-oncompleted-right-away" class="anchor" href="#creating-empty-observable---it-would-call-oncompleted-right-away"><span class="octicon octicon-link"></span></a>Creating empty Observable - it would call onCompleted right away</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">empty</span><span class="o">().</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> 
+      <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Completed"</span><span class="o">));</span>
+</pre></div>
+
+<h3>
+<a name="user-content-creating-never-observable---it-would-not-call-any-of-call-back-methods" class="anchor" href="#creating-never-observable---it-would-not-call-any-of-call-back-methods"><span class="octicon octicon-link"></span></a>Creating never Observable - it would not call any of call back methods</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">never</span><span class="o">().</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+</pre></div>
+
+<h3>
+<a name="user-content-changing-scheduler" class="anchor" href="#changing-scheduler"><span class="octicon octicon-link"></span></a>Changing Scheduler</h3>
+
+<p>By default Observable notifies observer asynchronously using thread-pool scheduler but you can change default scheduler as follows:</p>
+
+<h4>
+<a name="user-content-using-thread-pool-scheduler" class="anchor" href="#using-thread-pool-scheduler"><span class="octicon octicon-link"></span></a>Using thread-pool scheduler</h4>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">getThreadPoolScheduler</span><span class="o">()).</span>
+      <span class="n">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+</pre></div>
+
+<h4>
+<a name="user-content-using-new-thread-scheduler---it-will-create-new-thread" class="anchor" href="#using-new-thread-scheduler---it-will-create-new-thread"><span class="octicon octicon-link"></span></a>Using new-thread scheduler - it will create new thread</h4>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">getNewThreadScheduler</span><span class="o">()).</span>
+      <span class="n">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+</pre></div>
+
+<h4>
+<a name="user-content-using-timer-thread-with-interval---it-will-notify-at-each-interval" class="anchor" href="#using-timer-thread-with-interval---it-will-notify-at-each-interval"><span class="octicon octicon-link"></span></a>Using timer thread with interval - it will notify at each interval</h4>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">getTimerSchedulerWithMilliInterval</span><span class="o">(</span><span class="mi">1000</span><span class="o">)).</span>
+      <span class="n">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+   <span class="c1">// this will print each name every second</span>
+</pre></div>
+
+<h4>
+<a name="user-content-using-immediate-scheduler" class="anchor" href="#using-immediate-scheduler"><span class="octicon octicon-link"></span></a>Using immediate scheduler</h4>
+
+<p>This scheduler will call callback functions right away on the same thread. You can use this scheduler for a smaller amount of data that you want to consume synchronously. However, you cannot unsubscribe as it runs on the same thread.</p>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span>
+      <span class="n">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">getThreadPoolSchedulergetImmediateScheduler</span><span class="o">()).</span>
+      <span class="n">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+   <span class="c1">// this will print each name every second</span>
+</pre></div>
+
+<h3>
+<a name="user-content-transforming" class="anchor" href="#transforming"><span class="octicon octicon-link"></span></a>Transforming</h3>
+
+<p>Observables keep sequence of items as streams and they support map/flatMap operation as supported by standard Stream class, e.g.</p>
+
+<h3>
+<a name="user-content-map" class="anchor" href="#map"><span class="octicon octicon-link"></span></a>Map</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span><span class="na">map</span><span class="o">(</span><span class="n">name</span> <span class="o">-&gt;</span> <span class="n">name</span><span class="o">.</span><span class="na">hashCode</span><span class="o">()).</span>
+      <span class="n">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+</pre></div>
+
+<h3>
+<a name="user-content-flatmap" class="anchor" href="#flatmap"><span class="octicon octicon-link"></span></a>FlatMap</h3>
+
+<p>FlatMap merges list of lists into a single list when doing transformation, e.g.</p>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Stream</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="n">integerListStream</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">),</span> 
+      <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">),</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="mi">5</span><span class="o">));</span>
+   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">integerListStream</span><span class="o">).</span><span class="na">flatMap</span><span class="o">(</span><span class="n">integerList</span> <span class="o">-&gt;</span> <span class="n">integerList</span><span class="o">.</span><span class="na">stream</span><span class="o">()).</span>
+      <span class="n">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+</pre></div>
+
+<h3>
+<a name="user-content-filtering" class="anchor" href="#filtering"><span class="octicon octicon-link"></span></a>Filtering</h3>
+
+<p>Observables supports basic filtering support as provided by Java Streams, e.g.</p>
+
+<h3>
+<a name="user-content-filter" class="anchor" href="#filter"><span class="octicon octicon-link"></span></a>Filter</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">,</span> <span class="s">"Mike"</span><span class="o">,</span> <span class="s">"Scott"</span><span class="o">,</span> 
+      <span class="s">"Alex"</span><span class="o">,</span> <span class="s">"Jeff"</span><span class="o">,</span> <span class="s">"Brad"</span><span class="o">).</span><span class="na">filter</span><span class="o">(</span><span class="n">name</span> <span class="o">-&gt;</span> <span class="n">name</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">"M"</span><span class="o">)).</span>
+      <span class="n">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+   <span class="c1">// This will only print Matt and Mike</span>
+</pre></div>
+
+<h3>
+<a name="user-content-skip---skips-given-number-of-elements" class="anchor" href="#skip---skips-given-number-of-elements"><span class="octicon octicon-link"></span></a>Skip - skips given number of elements</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Stream</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">,</span> <span class="s">"Mike"</span><span class="o">,</span> 
+      <span class="s">"Scott"</span><span class="o">,</span> <span class="s">"Alex"</span><span class="o">,</span> <span class="s">"Jeff"</span><span class="o">,</span> <span class="s">"Brad"</span><span class="o">);</span> 
+   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">names</span><span class="o">).</span><span class="na">skip</span><span class="o">().</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> 
+      <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+   <span class="c1">// This will skip Erica and John</span>
+</pre></div>
+
+<h3>
+<a name="user-content-limit" class="anchor" href="#limit"><span class="octicon octicon-link"></span></a>Limit</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Stream</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">,</span> <span class="s">"Mike"</span><span class="o">,</span> 
+      <span class="s">"Scott"</span><span class="o">,</span> <span class="s">"Alex"</span><span class="o">,</span> <span class="s">"Jeff"</span><span class="o">,</span> <span class="s">"Brad"</span><span class="o">);</span> 
+   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">names</span><span class="o">).</span><span class="na">limit</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> 
+      <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+   <span class="c1">// This will only print first two names</span>
+</pre></div>
+
+<h3>
+<a name="user-content-distinct---removes-duplicates" class="anchor" href="#distinct---removes-duplicates"><span class="octicon octicon-link"></span></a>Distinct - removes duplicates</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Stream</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">,</span> <span class="s">"Erica"</span><span class="o">);</span>
+   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">names</span><span class="o">).</span><span class="na">distinct</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> 
+      <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+   <span class="c1">// This will print Erica only once</span>
+</pre></div>
+
+<h3>
+<a name="user-content-merge---concates-two-observable-data" class="anchor" href="#merge---concates-two-observable-data"><span class="octicon octicon-link"></span></a>Merge - concates two observable data</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">observable1</span> <span class="o">=</span> <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">));</span>
+   <span class="n">Observable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">observable2</span> <span class="o">=</span> <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">6</span><span class="o">));</span>
+   <span class="n">observable1</span><span class="o">.</span><span class="na">merge</span><span class="o">(</span><span class="n">observable2</span><span class="o">).</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> 
+      <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+   <span class="c1">// This will print 1, 2, 3, 4, 5, 6</span>
+</pre></div>
+
 
 <h3>
 <a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
