@@ -26,14 +26,14 @@ import com.plexobject.rx.util.SpliteratorAdapter;
  * 
  * @author Shahzad Bhatti
  *
- * @param <T>
+ * @param <T> type of subscription data 
  */
 public interface Observable<T> {
     /**
      * This method allows user to create Observable by passing a consumer
      * function for notifying subscribers.
      * 
-     * @param consumer
+     * @param consumer function that implements Consumer function
      * @return instance of Observable
      */
     public static <T> Observable<T> create(Consumer<Observer<T>> consumer) {
@@ -44,7 +44,7 @@ public interface Observable<T> {
     /**
      * This method creates Observable from a array of objects
      * 
-     * @param stream
+     * @param values - array of values
      * @return instance of Observable
      */
     @SuppressWarnings("unchecked")
@@ -55,7 +55,7 @@ public interface Observable<T> {
     /**
      * This method creates Observable from a given stream
      * 
-     * @param stream
+     * @param stream - source input
      * @return instance of Observable
      */
     public static <T> Observable<T> from(Stream<T> stream) {
@@ -66,7 +66,7 @@ public interface Observable<T> {
     /**
      * This method creates Observable from an iterator
      * 
-     * @param it
+     * @param it - source iterator
      * @return instance of Observable
      */
     public static <T> Observable<T> from(Iterator<T> it) {
@@ -78,7 +78,7 @@ public interface Observable<T> {
     /**
      * This method creates Observable from a spliterator
      * 
-     * @param it
+     * @param it - source spliterator
      * @return instance of Observable
      */
     public static <T> Observable<T> from(Spliterator<T> it) {
@@ -89,7 +89,7 @@ public interface Observable<T> {
     /**
      * This method creates Obsevable from a collection
      * 
-     * @param c
+     * @param c - source collection
      * @return instance of Observable
      */
     public static <T> Observable<T> from(Collection<T> c) {
@@ -111,7 +111,7 @@ public interface Observable<T> {
      * This method creates an Observable with a single object. If that object is
      * a collection, then entire collection is treated as a single entity.
      * 
-     * @param obj
+     * @param obj - source object
      * @return instance of Observable
      */
     public static <T> Observable<T> just(T obj) {
@@ -123,7 +123,7 @@ public interface Observable<T> {
      * This method creates an Observable that would call onError upon
      * subscription
      * 
-     * @param error
+     * @param error - source error
      * @return instance of Observable
      */
     public static <T> Observable<T> throwing(Throwable error) {
@@ -134,8 +134,8 @@ public interface Observable<T> {
     /**
      * Creates range of numbers starting at from until it reaches to exclusively
      * 
-     * @param from
-     * @param to
+     * @param from - starting range of number
+     * @param to - ending range of number exclusively
      * @return instance of Observable
      */
     public static Observable<Integer> range(int from, int to) {
@@ -162,7 +162,7 @@ public interface Observable<T> {
     /**
      * This method filters items in internal stream based on given predicate
      * 
-     * @param predicate
+     * @param predicate - predicate function
      * @return instance of Observable
      */
     Observable<T> filter(Predicate<? super T> predicate);
@@ -170,7 +170,7 @@ public interface Observable<T> {
     /**
      * This method transforms internal streams using given mapper function
      * 
-     * @param mapper
+     * @param mapper - mapper function
      * @return instance of Observable
      */
     <R> Observable<R> map(Function<? super T, ? extends R> mapper);
@@ -179,7 +179,7 @@ public interface Observable<T> {
      * This method transforms internal streams using given mapper function and
      * creates a single collection from multiple collections
      * 
-     * @param mapper
+     * @param mapper - mapper function
      * @return instance of Observable
      */
     <R> Observable<R> flatMap(
@@ -189,7 +189,7 @@ public interface Observable<T> {
      * This method limits number of elments in internal stream that would be
      * pushed to the subscriber
      * 
-     * @param maxSize
+     * @param maxSize - max size
      * @return instance of Observable
      */
     Observable<T> limit(long maxSize);
@@ -197,7 +197,7 @@ public interface Observable<T> {
     /**
      * This method skips first n elements from internal stream
      * 
-     * @param n
+     * @param n - number of elements to skip
      * @return instance of Observable
      */
     Observable<T> skip(long n);
@@ -212,7 +212,7 @@ public interface Observable<T> {
     /**
      * This method sorts internal stream using given comparator
      * 
-     * @param comparator
+     * @param comparator for sorting
      * @return instance of Observable
      */
     Observable<T> sorted(Comparator<? super T> comparator);
@@ -220,15 +220,15 @@ public interface Observable<T> {
     /**
      * This method changes scheduler for this Observable
      * 
+     * @param scheduler - to set
      * @return instance of Observable
-     * @return
      */
     Observable<T> subscribeOn(Scheduler scheduler);
 
     /**
      * This method merges internal stream with stream of another Observable
      * 
-     * @param other
+     * @param other - other Observable
      * @return instance of Observable
      */
     Observable<T> merge(Observable<? extends T> other);

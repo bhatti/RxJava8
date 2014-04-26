@@ -17,7 +17,7 @@ public interface Scheduler extends Disposable {
     /**
      * This method registers user-defined function that is invoked by scheduler
      * 
-     * @param consumer
+     * @param consumer - callback function to notify tick
      * @param subscription
      */
     <T> void scheduleTick(Consumer<SubscriptionObserver<T>> consumer,

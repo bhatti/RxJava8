@@ -17,7 +17,7 @@ import com.plexobject.rx.scheduler.Scheduler;
  * 
  * @author Shahzad Bhatti
  *
- * @param <T>
+ * @param <T> type of subscription data
  */
 public class ObservableNever<T> implements Observable<T> {
     @Override

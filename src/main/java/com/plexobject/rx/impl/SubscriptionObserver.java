@@ -8,7 +8,7 @@ import com.plexobject.rx.Subscription;
  * 
  * @author Shahzad Bhatti
  *
- * @param <T>
+ * @param <T> type of subscription data
  */
 public interface SubscriptionObserver<T> extends Subscription, Observer<T> {
 

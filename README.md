@@ -18,7 +18,7 @@ git clone git@github.com:bhatti/RxJava8.git
  - Compile and build jar file using
 
 ```
-gradle jar
+./gradlew jar
 ```
  
  - For now, you will have to copy and add jar file manually in your application.

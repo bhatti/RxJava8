@@ -18,7 +18,7 @@ import com.plexobject.rx.scheduler.Scheduler;
  * 
  * @author Shahzad Bhatti
  *
- * @param <T>
+ * @param <T> type of subscription data
  */
 public class ObservableDelegate<T> implements Observable<T> {
     private Consumer<Observer<T>> consumer;

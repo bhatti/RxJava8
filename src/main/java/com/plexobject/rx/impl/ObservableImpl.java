@@ -21,7 +21,7 @@ import com.plexobject.rx.scheduler.Scheduler;
  * 
  * @author Shahzad Bhatti
  *
- * @param <T>
+ * @param <T> type of subscription data
  */
 public class ObservableImpl<T> implements Observable<T> {
     private static final Logger logger = LoggerFactory

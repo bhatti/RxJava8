@@ -10,7 +10,7 @@ import com.plexobject.rx.OnCompletion;
  * 
  * @author Shahzad Bhatti
  *
- * @param <T>
+ * @param <T> type of subscription data
  */
 public class SubscriptionImpl<T> implements SubscriptionObserver<T> {
     private final Consumer<T> onNext;

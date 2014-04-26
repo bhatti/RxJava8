@@ -11,7 +11,7 @@ import java.util.stream.StreamSupport;
  * 
  * @author Shahzad Bhatti
  *
- * @param <T>
+ * @param <T> type of subscription data
  */
 public class SpliteratorAdapter<T> implements Spliterator<T> {
     private final Iterator<T> it;
