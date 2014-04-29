@@ -210,7 +210,7 @@
 <p>This scheduler will call callback functions right away on the same thread. You can use this scheduler for a smaller amount of data that you want to consume synchronously. However, you cannot unsubscribe as it runs on the same thread.</p>
 
 <div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span>
-      <span class="n">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">newThreadPoolSchedulergetImmediateScheduler</span><span class="o">()).</span>
+      <span class="n">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">newImmediateScheduler</span><span class="o">()).</span>
       <span class="n">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
    <span class="c1">// this will print each name every second</span>
 </pre></div>
