@@ -162,7 +162,7 @@ By default Observable notifies observer asynchronously using thread-pool schedul
 This scheduler will call callback functions right away on the same thread. You can use this scheduler for a smaller amount of data that you want to consume synchronously. However, you cannot unsubscribe as it runs on the same thread.
 ```java 
    Observable.from("Erica", "Matt", "John").
-      subscribeOn(Scheduler.newThreadPoolSchedulergetImmediateScheduler()).
+      subscribeOn(Scheduler.newImmediateScheduler()).
       subscribe(System.out::println, Throwable::printStackTrace);
    // this will print each name every second
 ```
