@@ -66,6 +66,12 @@
 </ul><h2>
 <a name="user-content-how-to-guide" class="anchor" href="#how-to-guide"><span class="octicon octicon-link"></span></a>How To Guide</h2>
 
+
+
+
+
+
+
 <h3>
 <a name="user-content-creating-observable-from-array-of-objects" class="anchor" href="#creating-observable-from-array-of-objects"><span class="octicon octicon-link"></span></a>Creating Observable from Array of objects</h3>
 
@@ -150,6 +156,15 @@
 </pre></div>
 
 <h3>
+<a name="user-content-creating-observable-for-integer-numbers" class="anchor" href="#creating-observable-for-integer-numbers"><span class="octicon octicon-link"></span></a>Creating Observable for integer numbers</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="c1">// Creates infinite integers starting at given number and incremented by 1</span>
+   <span class="n">Observable</span><span class="o">.</span><span class="na">integers</span><span class="o">(</span><span class="mi">4</span><span class="o">).</span><span class="na">limit</span><span class="o">(</span><span class="mi">4</span><span class="o">).</span><span class="na">subscribe</span><span class="o">(</span><span class="n">num</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">num</span><span class="o">),</span> 
+      <span class="n">error</span> <span class="o">-&gt;</span> <span class="n">error</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">());</span>
+   <span class="c1">// will print 4, 5, 6, 7</span>
+</pre></div>
+
+<h3>
 <a name="user-content-creating-empty-observable---it-would-call-oncompleted-right-away" class="anchor" href="#creating-empty-observable---it-would-call-oncompleted-right-away"><span class="octicon octicon-link"></span></a>Creating empty Observable - it would call onCompleted right away</h3>
 
 <div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">empty</span><span class="o">().</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> 
@@ -170,21 +185,21 @@
 <h4>
 <a name="user-content-using-thread-pool-scheduler" class="anchor" href="#using-thread-pool-scheduler"><span class="octicon octicon-link"></span></a>Using thread-pool scheduler</h4>
 
-<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">getThreadPoolScheduler</span><span class="o">()).</span>
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">newThreadPoolScheduler</span><span class="o">()).</span>
       <span class="n">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
 </pre></div>
 
 <h4>
 <a name="user-content-using-new-thread-scheduler---it-will-create-new-thread" class="anchor" href="#using-new-thread-scheduler---it-will-create-new-thread"><span class="octicon octicon-link"></span></a>Using new-thread scheduler - it will create new thread</h4>
 
-<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">getNewThreadScheduler</span><span class="o">()).</span>
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">newNewThreadScheduler</span><span class="o">()).</span>
       <span class="n">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
 </pre></div>
 
 <h4>
 <a name="user-content-using-timer-thread-with-interval---it-will-notify-at-each-interval" class="anchor" href="#using-timer-thread-with-interval---it-will-notify-at-each-interval"><span class="octicon octicon-link"></span></a>Using timer thread with interval - it will notify at each interval</h4>
 
-<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">getTimerSchedulerWithMilliInterval</span><span class="o">(</span><span class="mi">1000</span><span class="o">)).</span>
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">newTimerSchedulerWithMilliInterval</span><span class="o">(</span><span class="mi">1000</span><span class="o">)).</span>
       <span class="n">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
    <span class="c1">// this will print each name every second</span>
 </pre></div>
@@ -195,7 +210,7 @@
 <p>This scheduler will call callback functions right away on the same thread. You can use this scheduler for a smaller amount of data that you want to consume synchronously. However, you cannot unsubscribe as it runs on the same thread.</p>
 
 <div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="s">"Erica"</span><span class="o">,</span> <span class="s">"Matt"</span><span class="o">,</span> <span class="s">"John"</span><span class="o">).</span>
-      <span class="n">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">getThreadPoolSchedulergetImmediateScheduler</span><span class="o">()).</span>
+      <span class="n">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">newThreadPoolSchedulergetImmediateScheduler</span><span class="o">()).</span>
       <span class="n">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
    <span class="c1">// this will print each name every second</span>
 </pre></div>
@@ -276,11 +291,37 @@
    <span class="c1">// This will print 1, 2, 3, 4, 5, 6</span>
 </pre></div>
 
+<h3>
+<a name="user-content-parallel---parallel-processing-internal-stream" class="anchor" href="#parallel---parallel-processing-internal-stream"><span class="octicon octicon-link"></span></a>Parallel - parallel processing internal stream</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Observable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">observable</span> <span class="o">=</span> <span class="n">Observable</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">101</span><span class="o">)</span>
+                   <span class="o">.</span><span class="na">subscribeOn</span><span class="o">(</span><span class="n">Scheduler</span><span class="o">.</span><span class="na">newNewThreadScheduler</span><span class="o">())</span>
+                   <span class="o">.</span><span class="na">parallel</span><span class="o">().</span><span class="na">subscribe</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">,</span> 
+      <span class="nl">Throwable:</span><span class="o">:</span><span class="n">printStackTrace</span><span class="o">);</span>
+   <span class="c1">// This will print 1, 2, 3, ... 100</span>
+</pre></div>
+
+<h3>
+<a name="user-content-tolist---returns-internal-objects-as-list" class="anchor" href="#tolist---returns-internal-objects-as-list"><span class="octicon octicon-link"></span></a>toList - returns internal objects as list</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">).</span><span class="na">merge</span><span class="o">(</span><span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">)).</span><span class="na">toList</span><span class="o">();</span>
+   <span class="c1">// This will return list of 1, 2, 3, 4</span>
+</pre></div>
+
+<h3>
+<a name="user-content-toset---returns-internal-objects-as-list" class="anchor" href="#toset---returns-internal-objects-as-list"><span class="octicon octicon-link"></span></a>toSet - returns internal objects as list</h3>
+
+<div class="highlight highlight-java"><pre>   <span class="n">Set</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">set</span> <span class="o">=</span> <span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">).</span><span class="na">merge</span><span class="o">(</span><span class="n">Observable</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">)).</span><span class="na">merge</span><span class="o">(</span><span class="n">Observable</span><span class="o">.</span><span class="na">just</span><span class="o">(</span><span class="mi">3</span><span class="o">)).</span><span class="na">toSet</span><span class="o">();</span>
+   <span class="c1">// This will return set containg 1, 2, 3, 4 (unordered and without any duplicates)</span>
+</pre></div>
+
+
+
 
 <h3>
 <a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<p>Email bhatti AT plexobject DOT com for any questions or suggestions.</p>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
       </section>
     </div>
 
