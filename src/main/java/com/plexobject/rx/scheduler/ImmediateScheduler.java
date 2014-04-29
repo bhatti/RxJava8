@@ -2,8 +2,10 @@ package com.plexobject.rx.scheduler;
 
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.plexobject.rx.Disposable;
-import com.plexobject.rx.impl.SubscriptionObserver;
 
 /**
  * This implementation of scheduler uses same thread to notify subscriber. This
@@ -13,6 +15,9 @@ import com.plexobject.rx.impl.SubscriptionObserver;
  *
  */
 public class ImmediateScheduler implements Scheduler, Disposable {
+    private static final Logger logger = LoggerFactory
+            .getLogger(ImmediateScheduler.class);
+
     private boolean shutdown;
 
     @Override
@@ -21,12 +26,13 @@ public class ImmediateScheduler implements Scheduler, Disposable {
     }
 
     @Override
-    public <T> void scheduleTick(Consumer<SubscriptionObserver<T>> consumer,
-            SubscriptionObserver<T> subscription) {
+    public <T> void scheduleBackgroundTask(Consumer<T> consumer, T handle) {
         if (shutdown) {
-            throw new IllegalStateException("Already shutdown");
+            logger.warn("Already shutdown, cannot schedule new background task "
+                    + consumer);
+            return;
         }
-        consumer.accept(subscription);
+        consumer.accept(handle);
 
     }
 }

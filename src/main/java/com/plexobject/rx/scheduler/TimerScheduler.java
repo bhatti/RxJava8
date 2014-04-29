@@ -4,8 +4,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.plexobject.rx.Disposable;
-import com.plexobject.rx.impl.SubscriptionObserver;
 
 /**
  * This implementation of Scheduler notifies subscriber at given interval
@@ -14,6 +16,9 @@ import com.plexobject.rx.impl.SubscriptionObserver;
  *
  */
 public class TimerScheduler implements Scheduler, Disposable {
+    private static final Logger logger = LoggerFactory
+            .getLogger(TimerScheduler.class);
+
     private final Timer timer = new Timer();
     private final long interval;
     private boolean shutdown;
@@ -29,17 +34,18 @@ public class TimerScheduler implements Scheduler, Disposable {
     }
 
     @Override
-    public <T> void scheduleTick(Consumer<SubscriptionObserver<T>> consumer,
-            SubscriptionObserver<T> subscription) {
+    public <T> void scheduleBackgroundTask(Consumer<T> consumer, T handle) {
         if (shutdown) {
-            throw new IllegalStateException("Already shutdown");
+            logger.warn("Already shutdown, cannot schedule new background task "
+                    + consumer);
+            return;
         }
 
         timer.schedule(new TimerTask() {
 
             @Override
             public void run() {
-                consumer.accept(subscription);
+                consumer.accept(handle);
             }
         }, interval);
 

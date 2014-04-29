@@ -3,7 +3,6 @@ package com.plexobject.rx.scheduler;
 import java.util.function.Consumer;
 
 import com.plexobject.rx.Disposable;
-import com.plexobject.rx.impl.SubscriptionObserver;
 
 /**
  * This interface defines method to schedule callback function that is invoked
@@ -17,11 +16,12 @@ public interface Scheduler extends Disposable {
     /**
      * This method registers user-defined function that is invoked by scheduler
      * 
-     * @param consumer - callback function to notify tick
-     * @param subscription
+     * @param consumer
+     *            - callback function to notify tick
+     * @param handle
+     *            to pass in with consumer
      */
-    <T> void scheduleTick(Consumer<SubscriptionObserver<T>> consumer,
-            SubscriptionObserver<T> subscription);
+    <T> void scheduleBackgroundTask(Consumer<T> consumer, T handle);
 
     public static Scheduler getThreadPoolScheduler() {
         return new ThreadPoolScheduler();

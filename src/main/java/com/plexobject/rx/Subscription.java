@@ -13,5 +13,5 @@ public interface Subscription extends Disposable {
      * 
      * @return subscription status - true/false
      */
-    boolean isUnsubscribed();
+    boolean isSubscribed();
 }

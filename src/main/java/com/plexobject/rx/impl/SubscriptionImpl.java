@@ -32,7 +32,7 @@ public class SubscriptionImpl<T> implements SubscriptionObserver<T> {
     }
 
     @Override
-    public boolean isUnsubscribed() {
+    public boolean isSubscribed() {
         return subscribed;
     }
 

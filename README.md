@@ -112,6 +112,14 @@ git clone git@github.com:bhatti/RxJava8.git
    // will print 4, 5, 6, 7
 ```
 
+### Creating Observable for integer numbers
+```java 
+   // Creates infinite integers starting at given number and incremented by 1
+   Observable.integers(4).limit(4).subscribe(num -> System.out.println(num), 
+      error -> error.printStackTrace());
+   // will print 4, 5, 6, 7
+```
+
 
 ### Creating empty Observable - it would call onCompleted right away
 ```java 
@@ -225,6 +233,20 @@ Observables supports basic filtering support as provided by Java Streams, e.g.
    observable1.merge(observable2).subscribe(System.out::println, 
       Throwable::printStackTrace);
    // This will print 1, 2, 3, 4, 5, 6
+```
+
+
+### toList - returns internal objects as list
+```java  
+   List<Integer> list = Observable.from(1, 2).merge(Observable.from(3, 4)).toList();
+   // This will return list of 1, 2, 3, 4
+```
+
+
+### toSet - returns internal objects as list
+```java 
+   Set<Integer> set = Observable.from(1, 2).merge(Observable.from(3, 4)).merge(Observable.just(3)).toSet();
+   // This will return set containg 1, 2, 3, 4 (unordered and without any duplicates)
 ```
 
 ## API Doc and Samples

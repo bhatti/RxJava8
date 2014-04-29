@@ -2,10 +2,13 @@ package com.plexobject.rx.impl;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -21,9 +24,11 @@ import com.plexobject.rx.scheduler.Scheduler;
  * 
  * @author Shahzad Bhatti
  *
- * @param <T> type of subscription data
+ * @param <T>
+ *            type of subscription data
  */
 public class ObservableImpl<T> implements Observable<T> {
+    @SuppressWarnings("unused")
     private static final Logger logger = LoggerFactory
             .getLogger(ObservableImpl.class);
 
@@ -66,7 +71,7 @@ public class ObservableImpl<T> implements Observable<T> {
         SubscriptionObserver<T> subscription = new SubscriptionImpl<T>(onNext,
                 onError, onCompletion);
         it = stream.iterator();
-        scheduler.scheduleTick(s -> tick(s), subscription);
+        scheduler.scheduleBackgroundTask(s -> tick(s), subscription);
         return subscription;
     }
 
@@ -179,7 +184,7 @@ public class ObservableImpl<T> implements Observable<T> {
      * @param subscription
      */
     private synchronized void tick(SubscriptionObserver<T> subscription) {
-        if (!subscription.isUnsubscribed()) {
+        if (!subscription.isSubscribed()) {
             return;
         }
         if (error != null) {
@@ -189,7 +194,7 @@ public class ObservableImpl<T> implements Observable<T> {
                 try {
                     T obj = it.next();
                     notifyData(subscription, obj);
-                    scheduler.scheduleTick(s -> tick(s), subscription);
+                    scheduler.scheduleBackgroundTask(s -> tick(s), subscription);
                 } catch (Throwable e) {
                     this.error = e;
                     notifyError(subscription);
@@ -206,7 +211,6 @@ public class ObservableImpl<T> implements Observable<T> {
      * @param subscription
      */
     private void notifyError(SubscriptionObserver<T> subscription) {
-        logger.warn("Subscription " + subscription + " failed", error);
         subscription.onError(error);
     }
 
@@ -227,6 +231,26 @@ public class ObservableImpl<T> implements Observable<T> {
      */
     private void notifyCompleted(SubscriptionObserver<T> subscription) {
         subscription.onCompleted();
+    }
+
+    /**
+     * This returns internal stream as a list
+     * 
+     * @return list of objects
+     */
+    @Override
+    public List<T> toList() {
+        return stream.collect(Collectors.toList());
+    }
+
+    /**
+     * This returns internal stream as a set
+     * 
+     * @return set of objects
+     */
+    @Override
+    public Set<T> toSet() {
+        return stream.collect(Collectors.toSet());
     }
 
 }

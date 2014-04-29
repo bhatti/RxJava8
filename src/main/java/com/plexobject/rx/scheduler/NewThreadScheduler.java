@@ -4,8 +4,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.plexobject.rx.Disposable;
-import com.plexobject.rx.impl.SubscriptionObserver;
 
 /**
  * This method will create a new thread for scheduling, which notifies user for
@@ -15,6 +17,9 @@ import com.plexobject.rx.impl.SubscriptionObserver;
  *
  */
 public class NewThreadScheduler implements Scheduler, Disposable {
+    private static final Logger logger = LoggerFactory
+            .getLogger(NewThreadScheduler.class);
+
     final ExecutorService defaulExecutor = Executors.newSingleThreadExecutor();
     private boolean shutdown;
 
@@ -25,13 +30,14 @@ public class NewThreadScheduler implements Scheduler, Disposable {
     }
 
     @Override
-    public <T> void scheduleTick(Consumer<SubscriptionObserver<T>> consumer,
-            SubscriptionObserver<T> subscription) {
+    public <T> void scheduleBackgroundTask(Consumer<T> consumer, T handle) {
         if (shutdown) {
-            throw new IllegalStateException("Already shutdown");
+            logger.warn("Already shutdown, cannot schedule new background task "
+                    + consumer);
+            return;
         }
         defaulExecutor.submit(() -> {
-            consumer.accept(subscription);
+            consumer.accept(handle);
         });
 
     }

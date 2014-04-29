@@ -1,7 +1,9 @@
 package com.plexobject.rx.impl;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -18,7 +20,8 @@ import com.plexobject.rx.scheduler.Scheduler;
  * 
  * @author Shahzad Bhatti
  *
- * @param <T> type of subscription data
+ * @param <T>
+ *            type of subscription data
  */
 public class ObservableDelegate<T> implements Observable<T> {
     private Consumer<Observer<T>> consumer;
@@ -151,6 +154,26 @@ public class ObservableDelegate<T> implements Observable<T> {
      */
     @Override
     public Observable<T> merge(Observable<? extends T> other) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * This returns internal stream as a list
+     * 
+     * @return list of objects
+     */
+    @Override
+    public List<T> toList() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * This returns internal stream as a set
+     * 
+     * @return set of objects
+     */
+    @Override
+    public Set<T> toSet() {
         throw new UnsupportedOperationException();
     }
 }

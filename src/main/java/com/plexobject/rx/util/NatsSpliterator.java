@@ -12,11 +12,15 @@ import java.util.stream.StreamSupport;
  *
  */
 public class NatsSpliterator implements Spliterator<Integer> {
-    private int count;
+    private int number;
+
+    public NatsSpliterator(int from) {
+        this.number = from;
+    }
 
     @Override
     public boolean tryAdvance(Consumer<? super Integer> action) {
-        action.accept(count++);
+        action.accept(number++);
         return true;
     }
 
