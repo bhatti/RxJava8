@@ -176,4 +176,15 @@ public class ObservableDelegate<T> implements Observable<T> {
     public Set<T> toSet() {
         throw new UnsupportedOperationException();
     }
+
+    /**
+     * Converts internal stream into parallel stream (underlying stream must
+     * support parallel processing)
+     * 
+     * @return instance of Observable that supports parallel stream
+     */
+    @Override
+    public Observable<T> parallel() {
+        throw new UnsupportedOperationException();
+    }
 }

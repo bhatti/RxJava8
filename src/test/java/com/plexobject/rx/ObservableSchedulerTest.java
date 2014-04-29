@@ -25,7 +25,7 @@ public class ObservableSchedulerTest extends BaseObservableTest {
         initLatch(MAX_NUMBERS + 1); // N*onNext + onCompleted
 
         observable.subscribeOn(Scheduler
-                .getTimerSchedulerWithMilliInterval(MAX_NUMBERS));
+                .newTimerSchedulerWithMilliInterval(MAX_NUMBERS));
         setupCallback(observable, (v) -> times.add(System.currentTimeMillis()),
                 true);
 
@@ -48,7 +48,7 @@ public class ObservableSchedulerTest extends BaseObservableTest {
                 MAX_NUMBERS);
         initLatch(1);
 
-        observable.subscribeOn(Scheduler.getNewThreadScheduler());
+        observable.subscribeOn(Scheduler.newNewThreadScheduler());
         setupCallback(observable, (v) -> {
             throw new RuntimeException("test error");
         }, true);
@@ -62,21 +62,11 @@ public class ObservableSchedulerTest extends BaseObservableTest {
 
     @Test
     public void testSubscribeWithDifferentSchedulers() throws Exception {
-        for (int i = 0; i < 8; i++) {
+        for (Scheduler scheduler : allSchedulers) {
             initLatch(names.size() + 1); // N*onNext + onCompleted
 
             Observable<String> observable = Observable.from(names);
-
-            if (i > 6) {
-                observable.subscribeOn(Scheduler.getThreadPoolScheduler());
-            } else if (i > 4) {
-                observable.subscribeOn(Scheduler.getNewThreadScheduler());
-            } else if (i > 2) {
-                observable.subscribeOn(Scheduler
-                        .getTimerSchedulerWithMilliInterval(1));
-            } else {
-                observable.subscribeOn(Scheduler.getImmediateScheduler());
-            }
+            observable.subscribeOn(scheduler);
 
             setupCallback(observable, null, true);
             latch.await(100, TimeUnit.MILLISECONDS);

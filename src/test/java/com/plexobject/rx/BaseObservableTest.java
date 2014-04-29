@@ -11,6 +11,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.plexobject.rx.scheduler.Scheduler;
+
 public class BaseObservableTest {
     protected final List<String> names = Arrays.asList("Erica", "Matt", "John",
             "Mike", "Scott", "Alex", "Jeff", "Brad");
@@ -20,6 +22,9 @@ public class BaseObservableTest {
     protected AtomicReference<Throwable> onError;
     protected AtomicInteger onNext;
     protected AtomicInteger onCompleted;
+    protected Scheduler[] allSchedulers = { Scheduler.newImmediateScheduler(),
+            Scheduler.newNewThreadScheduler(),
+            Scheduler.newTimerSchedulerWithMilliInterval(1) };
 
     @Before
     public void setup() {

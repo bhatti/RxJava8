@@ -268,6 +268,14 @@ public interface Observable<T> {
     Observable<T> merge(Observable<? extends T> other);
 
     /**
+     * Converts internal stream into parallel stream (underlying stream must
+     * support parallel processing)
+     * 
+     * @return instance of Observable that supports parallel stream
+     */
+    Observable<T> parallel();
+
+    /**
      * This method subscribes given consumer and starts pushing the data. By
      * default, data is pushed asynchronously using thread-pool scheduler.
      * 

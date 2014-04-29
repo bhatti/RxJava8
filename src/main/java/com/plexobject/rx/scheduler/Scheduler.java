@@ -23,19 +23,19 @@ public interface Scheduler extends Disposable {
      */
     <T> void scheduleBackgroundTask(Consumer<T> consumer, T handle);
 
-    public static Scheduler getThreadPoolScheduler() {
+    public static Scheduler newThreadPoolScheduler() {
         return new ThreadPoolScheduler();
     }
 
-    public static Scheduler getImmediateScheduler() {
+    public static Scheduler newImmediateScheduler() {
         return new ImmediateScheduler();
     }
 
-    public static Scheduler getNewThreadScheduler() {
+    public static Scheduler newNewThreadScheduler() {
         return new NewThreadScheduler();
     }
 
-    public static Scheduler getTimerSchedulerWithMilliInterval(long interval) {
+    public static Scheduler newTimerSchedulerWithMilliInterval(long interval) {
         return new TimerScheduler(interval);
     }
 }

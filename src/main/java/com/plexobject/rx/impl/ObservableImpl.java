@@ -28,14 +28,13 @@ import com.plexobject.rx.scheduler.Scheduler;
  *            type of subscription data
  */
 public class ObservableImpl<T> implements Observable<T> {
-    @SuppressWarnings("unused")
     private static final Logger logger = LoggerFactory
             .getLogger(ObservableImpl.class);
 
     private Stream<T> stream;
     private Throwable error;
     private static final Scheduler defaultScheduler = Scheduler
-            .getThreadPoolScheduler();
+            .newThreadPoolScheduler();
     private Scheduler scheduler;
     private Iterator<T> it;
 
@@ -194,7 +193,8 @@ public class ObservableImpl<T> implements Observable<T> {
                 try {
                     T obj = it.next();
                     notifyData(subscription, obj);
-                    scheduler.scheduleBackgroundTask(s -> tick(s), subscription);
+                    scheduler
+                            .scheduleBackgroundTask(s -> tick(s), subscription);
                 } catch (Throwable e) {
                     this.error = e;
                     notifyError(subscription);
@@ -203,15 +203,6 @@ public class ObservableImpl<T> implements Observable<T> {
                 notifyCompleted(subscription);
             }
         }
-    }
-
-    /**
-     * This method is called to notify an error
-     * 
-     * @param subscription
-     */
-    private void notifyError(SubscriptionObserver<T> subscription) {
-        subscription.onError(error);
     }
 
     /**
@@ -225,12 +216,29 @@ public class ObservableImpl<T> implements Observable<T> {
     }
 
     /**
+     * This method is called to notify an error
+     * 
+     * @param subscription
+     */
+    private void notifyError(SubscriptionObserver<T> subscription) {
+        try {
+            subscription.onError(error);
+        } catch (Throwable e) {
+            logger.error("Failed to notify subscriber for error " + error, e);
+        }
+    }
+
+    /**
      * This method is called to notify subscriber that there is no more data
      * 
      * @param subscription
      */
     private void notifyCompleted(SubscriptionObserver<T> subscription) {
-        subscription.onCompleted();
+        try {
+            subscription.onCompleted();
+        } catch (Throwable e) {
+            logger.error("Failed to notify subscriber for onCompletion", e);
+        }
     }
 
     /**
@@ -251,6 +259,18 @@ public class ObservableImpl<T> implements Observable<T> {
     @Override
     public Set<T> toSet() {
         return stream.collect(Collectors.toSet());
+    }
+
+    /**
+     * Converts internal stream into parallel stream (underlying stream must
+     * support parallel processing)
+     * 
+     * @return instance of Observable that supports parallel stream
+     */
+    @Override
+    public Observable<T> parallel() {
+        stream = stream.parallel();
+        return this;
     }
 
 }

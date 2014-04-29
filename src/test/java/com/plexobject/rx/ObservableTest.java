@@ -1,12 +1,12 @@
 package com.plexobject.rx;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -17,24 +17,6 @@ import com.plexobject.rx.scheduler.Scheduler;
 import com.plexobject.rx.util.NatsSpliterator;
 
 public class ObservableTest extends BaseObservableTest {
-    @Test
-    public void testSubscribeCreate() throws Exception {
-        Observable<String> observable = Observable.create(observer -> {
-            for (String name : names) {
-                observer.onNext(name);
-            }
-            observer.onCompleted();
-        });
-        initLatch(names.size() + 1); // N*onNext + onCompleted
-        //
-        setupCallback(observable, null, true);
-        latch.await(100, TimeUnit.MILLISECONDS);
-        //
-        assertEquals(names.size(), onNext.get());
-        assertNull(onError.get());
-        assertEquals(1, onCompleted.get());
-    }
-
     @Test
     public void testSubscribeFilter() throws Exception {
         Observable<String> observable = Observable.from(names).filter(
@@ -74,21 +56,6 @@ public class ObservableTest extends BaseObservableTest {
         latch.await(100, TimeUnit.MILLISECONDS);
         //
         assertEquals(3, onNext.get());
-        assertNull(onError.get());
-        assertEquals(1, onCompleted.get());
-    }
-
-    @Test
-    public void testSubscribeFromArray() throws Exception {
-        Observable<String> observable = Observable.from("one", "two", "three",
-                "four", "five").distinct();
-
-        initLatch(5 + 1); // N*onNext + onCompleted
-
-        setupCallback(observable, null, true);
-        latch.await(100, TimeUnit.MILLISECONDS);
-        //
-        assertEquals(5, onNext.get());
         assertNull(onError.get());
         assertEquals(1, onCompleted.get());
     }
@@ -135,30 +102,121 @@ public class ObservableTest extends BaseObservableTest {
     }
 
     @Test
-    public void testSubscribeFrom() throws Exception {
-        for (int i = 0; i < 8; i++) {
-            initLatch(names.size() + 1); // N*onNext + onCompleted
+    public void testSubscribeFromCollection() throws Exception {
+        initLatch(names.size() + 1); // N*onNext + onCompleted
 
-            Observable<String> observable = null;
+        Observable<String> observable = Observable.from(names);
 
-            if (i > 6) {
-                observable = Observable.from(names.spliterator());
-            } else if (i > 4) {
-                observable = Observable.from(names);
-            } else if (i > 2) {
-                observable = Observable.from(names.stream());
-            } else {
-                observable = Observable.from(names.iterator());
-            }
+        setupCallback(observable, null, true);
+        latch.await(100, TimeUnit.MILLISECONDS);
+        //
+        assertEquals(names.size(), onNext.get());
+        //
+        assertNull(onError.get());
+        assertEquals(1, onCompleted.get());
+    }
 
-            setupCallback(observable, null, true);
-            latch.await(100, TimeUnit.MILLISECONDS);
-            //
-            assertEquals(names.size(), onNext.get());
-            //
-            assertNull(onError.get());
-            assertEquals(1, onCompleted.get());
-        }
+    @Test
+    public void testSubscribeFromArray() throws Exception {
+        Observable<String> observable = Observable.from("one", "two", "three",
+                "four", "five");
+
+        initLatch(5 + 1); // N*onNext + onCompleted
+
+        setupCallback(observable, null, true);
+        latch.await(100, TimeUnit.MILLISECONDS);
+        //
+        assertEquals(5, onNext.get());
+        assertNull(onError.get());
+        assertEquals(1, onCompleted.get());
+    }
+
+    @Test
+    public void testSubscribeParallel() throws Exception {
+        Observable<Integer> observable = Observable.range(1, 101)
+                .subscribeOn(Scheduler.newNewThreadScheduler()).parallel();
+
+        initLatch(100 + 1); // N*onNext + onCompleted
+        List<Integer> processedOrder = Collections
+                .synchronizedList(new ArrayList<>());
+        setupCallback(observable, (v) -> processedOrder.add(v), true);
+        latch.await(1000, TimeUnit.MILLISECONDS);
+        //
+        assertEquals(1, onCompleted.get());
+        assertEquals(100, onNext.get());
+        assertNull(onError.get());
+    }
+
+    @Test
+    public void testSubscribeFromArrayOne() throws Exception {
+        Observable<String> observable = Observable.from("one");
+
+        initLatch(1 + 1); // N*onNext + onCompleted
+
+        setupCallback(observable, null, true);
+        latch.await(100, TimeUnit.MILLISECONDS);
+        //
+        assertEquals(1, onNext.get());
+        assertNull(onError.get());
+        assertEquals(1, onCompleted.get());
+    }
+
+    @Test
+    public void testSubscribeFromArrayEmpty() throws Exception {
+        Observable<String> observable = Observable.from();
+
+        initLatch(1); // onCompleted
+
+        setupCallback(observable, null, true);
+        latch.await(100, TimeUnit.MILLISECONDS);
+        //
+        assertEquals(0, onNext.get());
+        assertNull(onError.get());
+        assertEquals(1, onCompleted.get());
+    }
+
+    @Test
+    public void testSubscribeFromSpliterator() throws Exception {
+        initLatch(names.size() + 1); // N*onNext + onCompleted
+
+        Observable<String> observable = Observable.from(names.spliterator());
+
+        setupCallback(observable, null, true);
+        latch.await(100, TimeUnit.MILLISECONDS);
+        //
+        assertEquals(names.size(), onNext.get());
+        //
+        assertNull(onError.get());
+        assertEquals(1, onCompleted.get());
+    }
+
+    @Test
+    public void testSubscribeFromStream() throws Exception {
+        initLatch(names.size() + 1); // N*onNext + onCompleted
+
+        Observable<String> observable = Observable.from(names.stream());
+        setupCallback(observable, null, true);
+        latch.await(100, TimeUnit.MILLISECONDS);
+        //
+        assertEquals(names.size(), onNext.get());
+        //
+        assertNull(onError.get());
+        assertEquals(1, onCompleted.get());
+    }
+
+    @Test
+    public void testSubscribeFromIterator() throws Exception {
+        initLatch(names.size() + 1); // N*onNext + onCompleted
+
+        Observable<String> observable = Observable.from(names.iterator());
+
+        setupCallback(observable, null, true);
+        latch.await(100, TimeUnit.MILLISECONDS);
+        //
+        assertEquals(names.size(), onNext.get());
+        //
+        assertNull(onError.get());
+        assertEquals(1, onCompleted.get());
     }
 
     @Test
@@ -177,13 +235,11 @@ public class ObservableTest extends BaseObservableTest {
 
     @Test
     public void testSubscribeEmpty() throws Exception {
-        for (int i = 0; i < 2; i++) {
+        for (Scheduler scheduler : allSchedulers) {
             Observable<String> observable = Observable.empty();
             //
             initLatch(1);
-            if (i % 2 == 0) {
-                observable.subscribeOn(Scheduler.getImmediateScheduler());
-            }
+            observable.subscribeOn(scheduler);
             setupCallback(observable, null, false);
             latch.await(100, TimeUnit.MILLISECONDS);
 
@@ -195,13 +251,11 @@ public class ObservableTest extends BaseObservableTest {
 
     @Test
     public void testSubscribeJust() throws Exception {
-        for (int i = 0; i < 2; i++) {
+        for (Scheduler scheduler : allSchedulers) {
             Observable<String> observable = Observable.just("One");
             //
             initLatch(1 + 1);
-            if (i % 2 == 0) {
-                observable.subscribeOn(Scheduler.getImmediateScheduler());
-            }
+            observable.subscribeOn(scheduler);
             setupCallback(observable, null, false);
             latch.await(100, TimeUnit.MILLISECONDS);
 
@@ -212,32 +266,12 @@ public class ObservableTest extends BaseObservableTest {
     }
 
     @Test
-    public void testSubscribeThrowing() throws Exception {
-        for (int i = 0; i < 2; i++) {
-            Observable<String> observable = Observable.throwing(new Error());
-
-            initLatch(1);
-            if (i % 2 == 0) {
-                observable.subscribeOn(Scheduler.getImmediateScheduler());
-            }
-            setupCallback(observable, null, false);
-            latch.await(100, TimeUnit.MILLISECONDS);
-
-            assertEquals(0, onNext.get());
-            assertNotNull(onError.get());
-            assertEquals(0, onCompleted.get());
-        }
-    }
-
-    @Test
     public void testSubscribeNever() throws Exception {
-        for (int i = 0; i < 2; i++) {
+        for (Scheduler scheduler : allSchedulers) {
             Observable<String> observable = Observable.never();
 
             initLatch(1); // just make one latch
-            if (i % 2 == 0) {
-                observable.subscribeOn(Scheduler.getImmediateScheduler());
-            }
+            observable.subscribeOn(scheduler);
             setupCallback(observable, null, false);
             latch.await(100, TimeUnit.MILLISECONDS);
 

@@ -141,19 +141,19 @@ By default Observable notifies observer asynchronously using thread-pool schedul
 
 #### Using thread-pool scheduler
 ```java 
-   Observable.from("Erica", "Matt", "John").subscribeOn(Scheduler.getThreadPoolScheduler()).
+   Observable.from("Erica", "Matt", "John").subscribeOn(Scheduler.newThreadPoolScheduler()).
       subscribe(System.out::println, Throwable::printStackTrace);
 ```
 
 #### Using new-thread scheduler - it will create new thread 
 ```java 
-   Observable.from("Erica", "Matt", "John").subscribeOn(Scheduler.getNewThreadScheduler()).
+   Observable.from("Erica", "Matt", "John").subscribeOn(Scheduler.newNewThreadScheduler()).
       subscribe(System.out::println, Throwable::printStackTrace);
 ```
 
 #### Using timer thread with interval - it will notify at each interval
 ```java 
-   Observable.from("Erica", "Matt", "John").subscribeOn(Scheduler.getTimerSchedulerWithMilliInterval(1000)).
+   Observable.from("Erica", "Matt", "John").subscribeOn(Scheduler.newTimerSchedulerWithMilliInterval(1000)).
       subscribe(System.out::println, Throwable::printStackTrace);
    // this will print each name every second
 ```
@@ -162,7 +162,7 @@ By default Observable notifies observer asynchronously using thread-pool schedul
 This scheduler will call callback functions right away on the same thread. You can use this scheduler for a smaller amount of data that you want to consume synchronously. However, you cannot unsubscribe as it runs on the same thread.
 ```java 
    Observable.from("Erica", "Matt", "John").
-      subscribeOn(Scheduler.getThreadPoolSchedulergetImmediateScheduler()).
+      subscribeOn(Scheduler.newThreadPoolSchedulergetImmediateScheduler()).
       subscribe(System.out::println, Throwable::printStackTrace);
    // this will print each name every second
 ```
@@ -233,6 +233,15 @@ Observables supports basic filtering support as provided by Java Streams, e.g.
    observable1.merge(observable2).subscribe(System.out::println, 
       Throwable::printStackTrace);
    // This will print 1, 2, 3, 4, 5, 6
+```
+
+### Parallel - parallel processing internal stream
+```java 
+   Observable<Integer> observable = Observable.range(1, 101)
+                   .subscribeOn(Scheduler.newNewThreadScheduler())
+                   .parallel().subscribe(System.out::println, 
+      Throwable::printStackTrace);
+   // This will print 1, 2, 3, ... 100
 ```
 
 
