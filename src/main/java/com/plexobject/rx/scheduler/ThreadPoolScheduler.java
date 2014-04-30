@@ -1,7 +1,7 @@
 package com.plexobject.rx.scheduler;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -20,12 +20,17 @@ public class ThreadPoolScheduler implements Scheduler, Disposable {
     private static final Logger logger = LoggerFactory
             .getLogger(ThreadPoolScheduler.class);
 
-    private final ExecutorService defaulExecutor = new ForkJoinPool();
+    private final ExecutorService defaulExecutor;
     private volatile boolean shutdown;
+
+    public ThreadPoolScheduler(int poolSize) {
+        defaulExecutor = Executors.newFixedThreadPool(poolSize);
+    }
 
     @Override
     public synchronized void dispose() {
-        if (shutdown) return;
+        if (shutdown)
+            return;
         shutdown = true;
         defaulExecutor.shutdown();
     }

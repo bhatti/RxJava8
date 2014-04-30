@@ -76,7 +76,7 @@ public class CancelableSpliterator<T> implements Spliterator<T>, Cancelable {
     }
 
     @Override
-    public boolean isCaneled() {
+    public boolean isCanceled() {
         return canceled.get();
     }
 

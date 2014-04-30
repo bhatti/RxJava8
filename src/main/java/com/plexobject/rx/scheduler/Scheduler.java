@@ -23,8 +23,8 @@ public interface Scheduler extends Disposable {
      */
     <T> void scheduleBackgroundTask(Consumer<T> consumer, T handle);
 
-    public static Scheduler newThreadPoolScheduler() {
-        return new ThreadPoolScheduler();
+    public static Scheduler newThreadPoolScheduler(int poolSize) {
+        return new ThreadPoolScheduler(poolSize);
     }
 
     public static Scheduler newImmediateScheduler() {

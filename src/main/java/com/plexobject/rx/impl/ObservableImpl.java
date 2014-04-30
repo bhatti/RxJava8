@@ -35,7 +35,7 @@ public class ObservableImpl<T> implements Observable<T> {
     private Stream<T> stream;
     private Throwable error;
     private static final Scheduler defaultScheduler = Scheduler
-            .newThreadPoolScheduler();
+            .newThreadPoolScheduler(8);
     private Scheduler scheduler;
     private Spliterator<T> it;
 

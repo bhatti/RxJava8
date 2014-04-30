@@ -111,7 +111,6 @@ public class ObservableTest extends BaseObservableTest {
         latch.await(100, TimeUnit.MILLISECONDS);
         //
         assertEquals(names.size(), onNext.get());
-        //
         assertNull(onError.get());
         assertEquals(1, onCompleted.get());
     }

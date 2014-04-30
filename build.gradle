@@ -2,6 +2,27 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: 'jacoco'
+
+
+jacoco {
+  toolVersion = "0.6.4.201312101107"
+  reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+jacocoTestReport {
+  group = "Reporting"
+  description = "Generate Jacoco coverage reports after running tests."
+  reports {
+    xml.enabled false
+    csv.enabled false
+    html.destination "${buildDir}/jacocoHtml"
+  }
+  additionalSourceDirs = files("java")
+  //additionalSourceDirs = files(sourceSets.main.allJava.srcDirs) 
+}
+
+
 
 task initSourceFolders << {
    sourceSets*.java.srcDirs*.each { it.mkdirs() }
@@ -48,5 +69,4 @@ uploadArchives {
        }
     }
 }
-
 

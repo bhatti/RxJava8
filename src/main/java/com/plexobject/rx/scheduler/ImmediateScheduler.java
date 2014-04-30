@@ -33,6 +33,5 @@ public class ImmediateScheduler implements Scheduler, Disposable {
             return;
         }
         consumer.accept(handle);
-
     }
 }

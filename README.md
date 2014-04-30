@@ -141,7 +141,8 @@ By default Observable notifies observer asynchronously using thread-pool schedul
 
 #### Using thread-pool scheduler
 ```java 
-   Observable.from("Erica", "Matt", "John").subscribeOn(Scheduler.newThreadPoolScheduler()).
+   // We are creating thread pool of size 4 here
+   Observable.from("Erica", "Matt", "John").subscribeOn(Scheduler.newThreadPoolScheduler(4)).
       subscribe(System.out::println, Throwable::printStackTrace);
 ```
 

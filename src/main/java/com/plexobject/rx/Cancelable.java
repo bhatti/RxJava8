@@ -17,5 +17,5 @@ public interface Cancelable {
      * 
      * @return
      */
-    boolean isCaneled();
+    boolean isCanceled();
 }

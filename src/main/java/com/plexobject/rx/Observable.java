@@ -10,6 +10,7 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -19,7 +20,6 @@ import com.plexobject.rx.impl.ObservableNever;
 import com.plexobject.rx.impl.Observer;
 import com.plexobject.rx.scheduler.Scheduler;
 import com.plexobject.rx.util.NatsSpliterator;
-import com.plexobject.rx.util.RangeSpliterator;
 import com.plexobject.rx.util.SpliteratorAdapter;
 
 /**
@@ -53,7 +53,7 @@ public interface Observable<T> {
      *            - array of values
      * @return instance of Observable
      */
-    @SuppressWarnings("unchecked")
+    @SafeVarargs
     public static <T> Observable<T> from(T... values) {
         return new ObservableImpl<T>(Stream.of(values), null);
     }
@@ -114,7 +114,7 @@ public interface Observable<T> {
      * @return instance of Observable
      */
     public static <T> Observable<T> empty() {
-        return new ObservableImpl<T>(Stream.<T> of(), null);
+        return Observable.from();
     }
 
     /**
@@ -127,7 +127,7 @@ public interface Observable<T> {
      */
     public static <T> Observable<T> just(T obj) {
         Objects.requireNonNull(obj);
-        return new ObservableImpl<T>(Stream.<T> of(obj), null);
+        return Observable.from(obj);
     }
 
     /**
@@ -153,10 +153,8 @@ public interface Observable<T> {
      * @return instance of Observable
      */
     public static Observable<Integer> range(int from, int to) {
-        return new ObservableImpl<Integer>(
-                new RangeSpliterator(from, to).toStream(), null);
-        // return new ObservableImpl<Integer>(IntStream.range(from, to).boxed(),
-        // null);
+        return new ObservableImpl<Integer>(IntStream.range(from, to).boxed(),
+                null);
     }
 
     /**
