@@ -21,10 +21,11 @@ public class ThreadPoolScheduler implements Scheduler, Disposable {
             .getLogger(ThreadPoolScheduler.class);
 
     private final ExecutorService defaulExecutor = new ForkJoinPool();
-    private boolean shutdown;
+    private volatile boolean shutdown;
 
     @Override
     public synchronized void dispose() {
+        if (shutdown) return;
         shutdown = true;
         defaulExecutor.shutdown();
     }

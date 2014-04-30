@@ -1,10 +1,10 @@
 package com.plexobject.rx.impl;
 
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -18,6 +18,7 @@ import com.plexobject.rx.Observable;
 import com.plexobject.rx.OnCompletion;
 import com.plexobject.rx.Subscription;
 import com.plexobject.rx.scheduler.Scheduler;
+import com.plexobject.rx.util.CancelableSpliterator;
 
 /**
  * This is default implementation of Observable that keeps data as stream
@@ -36,7 +37,7 @@ public class ObservableImpl<T> implements Observable<T> {
     private static final Scheduler defaultScheduler = Scheduler
             .newThreadPoolScheduler();
     private Scheduler scheduler;
-    private Iterator<T> it;
+    private Spliterator<T> it;
 
     public ObservableImpl(final Stream<T> stream, Throwable error) {
         this(stream, error, defaultScheduler);
@@ -62,16 +63,28 @@ public class ObservableImpl<T> implements Observable<T> {
      * onNext and onError is required but onCompletion is optional This method
      * registers a callback with scheduler, which is notified asynchronously
      */
-    public synchronized Subscription subscribe(Consumer<T> onNext,
+    public Subscription subscribe(Consumer<T> onNext,
             Consumer<Throwable> onError, OnCompletion onCompletion) {
         Objects.requireNonNull(onNext);
         Objects.requireNonNull(onError);
 
-        SubscriptionObserver<T> subscription = new SubscriptionImpl<T>(onNext,
-                onError, onCompletion);
-        it = stream.iterator();
-        scheduler.scheduleBackgroundTask(s -> tick(s), subscription);
-        return subscription;
+        if (error == null && stream.isParallel()) {
+            CancelableSpliterator<T> cancelableSpliterator = new CancelableSpliterator<T>(
+                    stream.spliterator());
+            SubscriptionObserver<T> subscription = new SubscriptionImpl<T>(
+                    onNext, onError, onCompletion, cancelableSpliterator);
+
+            cancelableSpliterator.parEach(v -> parallelTick(subscription, v),
+                    () -> notifyCompleted(subscription));
+
+            return subscription;
+        } else {
+            SubscriptionObserver<T> subscription = new SubscriptionImpl<T>(
+                    onNext, onError, onCompletion, null);
+            it = stream.spliterator();
+            scheduler.scheduleBackgroundTask(s -> tick(s), subscription);
+            return subscription;
+        }
     }
 
     /**
@@ -174,6 +187,26 @@ public class ObservableImpl<T> implements Observable<T> {
     }
 
     /**
+     * This method is called asynchronously by parallel stream. Each time this
+     * method is called, it checks if subscription is still valid and if it's
+     * valid then it proceeds to check for data. Note: this method would be
+     * called in multiple threads by parallel stream and we will call cancel
+     * stream if subscription is unsubscribed.
+     * 
+     * @param subscription
+     */
+    private void parallelTick(SubscriptionObserver<T> subscription, T obj) {
+        if (!subscription.isSubscribed()) {
+            return;
+        }
+        if (error != null) {
+            notifyError(subscription);
+        } else {
+            notifyData(subscription, obj);
+        }
+    }
+
+    /**
      * This method is called asynchronously by scheduler. Each time this method
      * is called, it checks if subscription is still valid and if it's valid
      * then it proceeds to check for data. When there is more data and there are
@@ -182,23 +215,19 @@ public class ObservableImpl<T> implements Observable<T> {
      * 
      * @param subscription
      */
-    private synchronized void tick(SubscriptionObserver<T> subscription) {
+    private void tick(SubscriptionObserver<T> subscription) {
         if (!subscription.isSubscribed()) {
             return;
         }
         if (error != null) {
             notifyError(subscription);
         } else {
-            if (it.hasNext()) {
-                try {
-                    T obj = it.next();
-                    notifyData(subscription, obj);
+            if (it.tryAdvance(obj -> {
+                if (notifyData(subscription, obj)) {
                     scheduler
                             .scheduleBackgroundTask(s -> tick(s), subscription);
-                } catch (Throwable e) {
-                    this.error = e;
-                    notifyError(subscription);
                 }
+            })) {
             } else {
                 notifyCompleted(subscription);
             }
@@ -210,9 +239,17 @@ public class ObservableImpl<T> implements Observable<T> {
      * 
      * @param subscription
      * @param obj
+     * @return true if onNext method was called successfully, false otherwise
      */
-    private void notifyData(SubscriptionObserver<T> subscription, T obj) {
-        subscription.onNext(obj);
+    private boolean notifyData(SubscriptionObserver<T> subscription, T obj) {
+        try {
+            subscription.onNext(obj);
+            return true;
+        } catch (Throwable e) {
+            this.error = e;
+            notifyError(subscription);
+            return false;
+        }
     }
 
     /**

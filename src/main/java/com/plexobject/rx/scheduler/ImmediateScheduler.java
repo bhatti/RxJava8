@@ -18,10 +18,10 @@ public class ImmediateScheduler implements Scheduler, Disposable {
     private static final Logger logger = LoggerFactory
             .getLogger(ImmediateScheduler.class);
 
-    private boolean shutdown;
+    private volatile boolean shutdown;
 
     @Override
-    public synchronized void dispose() {
+    public void dispose() {
         shutdown = true;
     }
 

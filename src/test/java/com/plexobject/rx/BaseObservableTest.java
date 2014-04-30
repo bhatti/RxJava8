@@ -17,7 +17,6 @@ public class BaseObservableTest {
     protected final List<String> names = Arrays.asList("Erica", "Matt", "John",
             "Mike", "Scott", "Alex", "Jeff", "Brad");
 
-    protected Subscription subscription;
     protected CountDownLatch latch;
     protected AtomicReference<Throwable> onError;
     protected AtomicInteger onNext;
@@ -32,9 +31,6 @@ public class BaseObservableTest {
 
     @After
     public void teardown() {
-        if (subscription != null) {
-            subscription.dispose();
-        }
     }
 
     @Test
@@ -85,11 +81,10 @@ public class BaseObservableTest {
         onCompleted = new AtomicInteger();
     }
 
-    protected <T> Observable<T> setupCallback(Observable<T> observable,
+    protected <T> Subscription setupCallback(Observable<T> observable,
             Consumer<T> onNextWork, boolean onComplete) throws Exception {
-
         if (onComplete) {
-            subscription = observable.subscribe(v -> {
+            return observable.subscribe(v -> {
                 if (onNextWork != null) {
                     onNextWork.accept(v);
                 }
@@ -103,7 +98,7 @@ public class BaseObservableTest {
                 onCompleted.incrementAndGet();
             });
         } else {
-            subscription = observable.subscribe(v -> {
+            return observable.subscribe(v -> {
                 if (onNextWork != null) {
                     onNextWork.accept(v);
                 }
@@ -114,7 +109,5 @@ public class BaseObservableTest {
                 onError.set(error);
             });
         }
-
-        return observable;
     }
 }

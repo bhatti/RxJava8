@@ -21,7 +21,7 @@ public class TimerScheduler implements Scheduler, Disposable {
 
     private final Timer timer = new Timer();
     private final long interval;
-    private boolean shutdown;
+    private volatile boolean shutdown;
 
     public TimerScheduler(long interval) {
         this.interval = interval;
@@ -29,6 +29,7 @@ public class TimerScheduler implements Scheduler, Disposable {
 
     @Override
     public synchronized void dispose() {
+        if (shutdown) return;
         shutdown = true;
         timer.cancel();
     }

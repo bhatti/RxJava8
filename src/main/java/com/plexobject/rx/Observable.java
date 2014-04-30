@@ -10,7 +10,6 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -20,6 +19,7 @@ import com.plexobject.rx.impl.ObservableNever;
 import com.plexobject.rx.impl.Observer;
 import com.plexobject.rx.scheduler.Scheduler;
 import com.plexobject.rx.util.NatsSpliterator;
+import com.plexobject.rx.util.RangeSpliterator;
 import com.plexobject.rx.util.SpliteratorAdapter;
 
 /**
@@ -153,8 +153,10 @@ public interface Observable<T> {
      * @return instance of Observable
      */
     public static Observable<Integer> range(int from, int to) {
-        return new ObservableImpl<Integer>(IntStream.range(from, to).boxed(),
-                null);
+        return new ObservableImpl<Integer>(
+                new RangeSpliterator(from, to).toStream(), null);
+        // return new ObservableImpl<Integer>(IntStream.range(from, to).boxed(),
+        // null);
     }
 
     /**

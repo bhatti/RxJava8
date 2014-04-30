@@ -43,12 +43,12 @@ public class ObservableDelegate<T> implements Observable<T> {
      * This method subscribes user to receive data Note: onNext and onError are
      * required but onCompletion is optional
      */
-    public synchronized Subscription subscribe(Consumer<T> onNext,
+    public Subscription subscribe(Consumer<T> onNext,
             Consumer<Throwable> onError, OnCompletion onCompletion) {
         Objects.requireNonNull(onNext);
         Objects.requireNonNull(onError);
         SubscriptionObserver<T> subscription = new SubscriptionImpl<T>(onNext,
-                onError, onCompletion);
+                onError, onCompletion, null);
         consumer.accept(new Observer<T>() {
             @Override
             public void onNext(T obj) {

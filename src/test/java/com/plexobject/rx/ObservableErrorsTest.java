@@ -48,7 +48,7 @@ public class ObservableErrorsTest extends BaseObservableTest {
                 .subscribeOn(Scheduler.newImmediateScheduler());
 
         initLatch(1);
-        subscription = observable.subscribe(v -> {
+        observable.subscribe(v -> {
         }, error -> {
             throw new RuntimeException();
         }, () -> {

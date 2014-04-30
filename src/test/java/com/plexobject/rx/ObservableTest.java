@@ -139,11 +139,18 @@ public class ObservableTest extends BaseObservableTest {
         initLatch(100 + 1); // N*onNext + onCompleted
         List<Integer> processedOrder = Collections
                 .synchronizedList(new ArrayList<>());
-        setupCallback(observable, (v) -> processedOrder.add(v), true);
-        latch.await(1000, TimeUnit.MILLISECONDS);
-        //
-        assertEquals(1, onCompleted.get());
-        assertEquals(100, onNext.get());
+        Subscription subscription = setupCallback(observable, (v) -> {
+            processedOrder.add(v);
+            try {
+                Thread.sleep(1);
+            } catch (Exception e) {
+                Thread.interrupted();
+            }
+        }, true);
+        Thread.sleep(10);
+        subscription.dispose();
+
+        assertEquals(0, onCompleted.get());
         assertNull(onError.get());
     }
 
@@ -224,7 +231,7 @@ public class ObservableTest extends BaseObservableTest {
         Observable<Integer> observable = Observable
                 .from(new NatsSpliterator(0));
         initLatch(0); // ignore latch
-        setupCallback(observable, null, true);
+        Subscription subscription = setupCallback(observable, null, true);
         Thread.sleep(10);
         subscription.dispose();
         //

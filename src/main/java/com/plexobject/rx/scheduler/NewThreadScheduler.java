@@ -21,10 +21,11 @@ public class NewThreadScheduler implements Scheduler, Disposable {
             .getLogger(NewThreadScheduler.class);
 
     final ExecutorService defaulExecutor = Executors.newSingleThreadExecutor();
-    private boolean shutdown;
+    private volatile boolean shutdown;
 
     @Override
     public synchronized void dispose() {
+        if (shutdown) return;
         shutdown = true;
         defaulExecutor.shutdown();
     }

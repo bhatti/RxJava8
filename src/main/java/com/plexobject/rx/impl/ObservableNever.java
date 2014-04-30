@@ -30,9 +30,9 @@ public class ObservableNever<T> implements Observable<T> {
     }
 
     @Override
-    public synchronized Subscription subscribe(Consumer<T> onNext,
+    public Subscription subscribe(Consumer<T> onNext,
             Consumer<Throwable> onError, OnCompletion onCompletion) {
-        return new SubscriptionImpl<T>(onNext, onError, onCompletion);
+        return new SubscriptionImpl<T>(onNext, onError, onCompletion, null);
     }
 
     @Override
