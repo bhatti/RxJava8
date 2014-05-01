@@ -2,9 +2,10 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'jacoco'
+//apply plugin: 'jacoco'
 
 
+/*
 jacoco {
   toolVersion = "0.6.4.201312101107"
   reportsDir = file("$buildDir/customJacocoReportDir")
@@ -21,7 +22,7 @@ jacocoTestReport {
   additionalSourceDirs = files("java")
   //additionalSourceDirs = files(sourceSets.main.allJava.srcDirs) 
 }
-
+*/
 
 
 task initSourceFolders << {
@@ -59,6 +60,7 @@ dependencies {
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // 'test.useTestNG()' to your build script.
     testCompile "junit:junit:4.11"
+    testCompile "com.googlecode.jmockit:jmockit:1.7"
 }
 
 

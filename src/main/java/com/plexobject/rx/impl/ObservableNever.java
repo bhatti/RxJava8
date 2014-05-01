@@ -37,53 +37,53 @@ public class ObservableNever<T> implements Observable<T> {
 
     @Override
     public Observable<T> subscribeOn(Scheduler scheduler) {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Observable<T> distinct() {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Observable<T> merge(Observable<? extends T> other) {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Observable<T> filter(Predicate<? super T> predicate) {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public <R> Observable<R> map(Function<? super T, ? extends R> mapper) {
-        return new ObservableNever<R>();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public <R> Observable<R> flatMap(
             Function<? super T, ? extends Stream<? extends R>> mapper) {
-        return new ObservableNever<R>();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Observable<T> limit(long maxSize) {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Observable<T> skip(long n) {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Observable<T> sorted() {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Observable<T> sorted(Comparator<? super T> comparator) {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     /**

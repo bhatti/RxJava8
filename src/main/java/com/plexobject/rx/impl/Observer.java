@@ -7,20 +7,23 @@ import com.plexobject.rx.OnCompletion;
  * 
  * @author Shahzad Bhatti
  *
- * @param <T> type of data to deliver
+ * @param <T>
+ *            type of data to deliver
  */
 public interface Observer<T> extends OnCompletion {
     /**
      * This method is called to push data
      * 
-     * @param obj - data element
+     * @param obj
+     *            - data element
      */
     void onNext(T obj);
 
     /**
      * This method is called to notify error
      * 
-     * @param error - exception
+     * @param error
+     *            - exception
      */
     void onError(Throwable error);
 }

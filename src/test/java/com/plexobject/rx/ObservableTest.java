@@ -273,18 +273,15 @@ public class ObservableTest extends BaseObservableTest {
 
     @Test
     public void testSubscribeNever() throws Exception {
-        for (Scheduler scheduler : allSchedulers) {
-            Observable<String> observable = Observable.never();
+        Observable<String> observable = Observable.never();
 
-            initLatch(1); // just make one latch
-            observable.subscribeOn(scheduler);
-            setupCallback(observable, null, false);
-            latch.await(100, TimeUnit.MILLISECONDS);
+        initLatch(1); // just make one latch
+        setupCallback(observable, null, false);
+        latch.await(100, TimeUnit.MILLISECONDS);
 
-            assertEquals(0, onNext.get());
-            assertNull(onError.get());
-            assertEquals(0, onCompleted.get());
-        }
+        assertEquals(0, onNext.get());
+        assertNull(onError.get());
+        assertEquals(0, onCompleted.get());
     }
 
 }

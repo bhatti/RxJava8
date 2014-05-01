@@ -24,10 +24,10 @@ import com.plexobject.rx.scheduler.Scheduler;
  *            type of subscription data
  */
 public class ObservableDelegate<T> implements Observable<T> {
-    private Consumer<Observer<T>> consumer;
+    private Consumer<Observer<T>> delegate;
 
-    public ObservableDelegate(final Consumer<Observer<T>> consumer) {
-        this.consumer = consumer;
+    public ObservableDelegate(final Consumer<Observer<T>> delegate) {
+        this.delegate = delegate;
     }
 
     /**
@@ -47,12 +47,19 @@ public class ObservableDelegate<T> implements Observable<T> {
             Consumer<Throwable> onError, OnCompletion onCompletion) {
         Objects.requireNonNull(onNext);
         Objects.requireNonNull(onError);
-        SubscriptionObserver<T> subscription = new SubscriptionImpl<T>(onNext,
-                onError, onCompletion, null);
-        consumer.accept(new Observer<T>() {
+        final SubscriptionObserver<T> subscription = new SubscriptionImpl<T>(
+                onNext, onError, onCompletion, null);
+        delegate.accept(new Observer<T>() {
+            private boolean hasError;
+
             @Override
             public void onNext(T obj) {
-                subscription.onNext(obj);
+                try {
+                    subscription.onNext(obj);
+                } catch (Exception e) {
+                    hasError = true;
+                    subscription.onError(e);
+                }
             }
 
             @Override
@@ -62,7 +69,9 @@ public class ObservableDelegate<T> implements Observable<T> {
 
             @Override
             public void onCompleted() {
-                subscription.onCompleted();
+                if (!hasError) {
+                    subscription.onCompleted();
+                }
             }
         });
         return subscription;

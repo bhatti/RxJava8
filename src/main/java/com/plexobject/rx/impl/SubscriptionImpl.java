@@ -66,5 +66,4 @@ public class SubscriptionImpl<T> implements SubscriptionObserver<T> {
         }
         subscribed = false;
     }
-
 }
