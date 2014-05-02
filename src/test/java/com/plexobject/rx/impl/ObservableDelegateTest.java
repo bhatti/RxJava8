@@ -190,4 +190,9 @@ public class ObservableDelegateTest {
         defaultInstance.parallel();
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testCount() throws Exception {
+        defaultInstance.count();
+    }
+
 }

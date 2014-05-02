@@ -169,6 +169,14 @@ This scheduler will call callback functions right away on the same thread. You c
 ```
 
 
+### Counting
+Count method stores number of elements that is then passed to the subscriber
+### Count
+```java 
+   Observable.from("Erica", "Matt", "John").count().
+      subscribe(System.out::println, Throwable::printStackTrace);
+```
+
 ### Transforming 
 Observables keep sequence of items as streams and they support map/flatMap operation as supported by standard Stream class, e.g.
 ### Map

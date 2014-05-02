@@ -255,6 +255,14 @@ public class ObservableTest extends BaseObservableTest {
         }
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void testSubscribeMultipleSubscription() throws Exception {
+        Observable<Integer> observable = Observable.from(1, 2, 3, 4, 5);
+        setupCallback(observable, null, false);
+        setupCallback(observable, null, false); // you can only consume stream
+                                                // once
+    }
+
     @Test
     public void testSubscribeJust() throws Exception {
         for (Scheduler scheduler : allSchedulers) {
@@ -282,6 +290,19 @@ public class ObservableTest extends BaseObservableTest {
         assertEquals(0, onNext.get());
         assertNull(onError.get());
         assertEquals(0, onCompleted.get());
+    }
+
+    @Test
+    public void testSubscribeCount() throws Exception {
+        Observable<Long> observable = Observable.from(1, 2, 3, 4, 5).count();
+
+        initLatch(2);
+        setupCallback(observable, null, true);
+        latch.await(100, TimeUnit.MILLISECONDS);
+
+        assertEquals(1, onNext.get());
+        assertNull(onError.get());
+        assertEquals(1, onCompleted.get());
     }
 
 }

@@ -196,4 +196,14 @@ public class ObservableDelegate<T> implements Observable<T> {
     public Observable<T> parallel() {
         throw new UnsupportedOperationException();
     }
+
+    /**
+     * This method counts number of elements in stream and creates another
+     * stream with that value that is consumed by the subscriber
+     * 
+     * @return
+     */
+    public Observable<Long> count() {
+        throw new UnsupportedOperationException();
+    }
 }

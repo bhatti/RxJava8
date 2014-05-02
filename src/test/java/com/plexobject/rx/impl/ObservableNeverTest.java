@@ -111,4 +111,8 @@ public class ObservableNeverTest {
         instance.parallel();
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testCount() throws Exception {
+        instance.count();
+    }
 }

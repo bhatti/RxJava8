@@ -310,4 +310,14 @@ public class ObservableImpl<T> implements Observable<T> {
         return this;
     }
 
+    /**
+     * This method counts number of elements in stream and creates another
+     * stream with that value that is consumed by the subscriber
+     * 
+     * @return
+     */
+    public Observable<Long> count() {
+        Stream<Long> countStream = Stream.of(stream.count());
+        return new ObservableImpl<Long>(countStream, error, scheduler);
+    }
 }

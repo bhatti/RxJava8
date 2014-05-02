@@ -179,6 +179,14 @@ public interface Observable<T> {
     }
 
     /**
+     * This method counts number of elements in stream and creates another
+     * stream with that value that is consumed by the subscriber
+     * 
+     * @return
+     */
+    Observable<Long> count();
+
+    /**
      * This method removes duplicates from internal stream
      * 
      * @return
