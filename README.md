@@ -250,7 +250,7 @@ Observables supports basic filtering support as provided by Java Streams, e.g.
    Observable<Integer> observable2 = Observable.from(1, 2, 3);
    observable1.zip(observable2).subscribe(System.out::println, 
       Throwable::printStackTrace);
-   // This will print [One, 1], [Two, 2], [Three, 3]
+   // This will pass instance of Tuple object to System.out.println, which would print each tuple as [One, 1], [Two, 2], [Three, 3]
 ```
 
 ### Parallel - parallel processing internal stream
