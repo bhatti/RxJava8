@@ -244,6 +244,15 @@ Observables supports basic filtering support as provided by Java Streams, e.g.
    // This will print 1, 2, 3, 4, 5, 6
 ```
 
+### Zip - pushes data from observable data as a tuple
+```java 
+   Observable<String> observable1 = Observable.from("One", "Two", "Three");
+   Observable<Integer> observable2 = Observable.from(1, 2, 3);
+   observable1.zip(observable2).subscribe(System.out::println, 
+      Throwable::printStackTrace);
+   // This will print [One, 1], [Two, 2], [Three, 3]
+```
+
 ### Parallel - parallel processing internal stream
 ```java 
    Observable<Integer> observable = Observable.range(1, 101)

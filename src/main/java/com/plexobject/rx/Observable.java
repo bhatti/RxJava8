@@ -21,6 +21,7 @@ import com.plexobject.rx.impl.Observer;
 import com.plexobject.rx.scheduler.Scheduler;
 import com.plexobject.rx.util.NatsSpliterator;
 import com.plexobject.rx.util.SpliteratorAdapter;
+import com.plexobject.rx.util.Tuple;
 
 /**
  * The Observable interface defines common methods of reactive extensions, which
@@ -79,7 +80,7 @@ public interface Observable<T> {
      */
     public static <T> Observable<T> from(Iterator<T> it) {
         Objects.requireNonNull(it);
-        return new ObservableImpl<T>(new SpliteratorAdapter<T>(it).toStream(),
+        return new ObservableImpl<T>(new SpliteratorAdapter<T>(it).getStream(),
                 null);
     }
 
@@ -166,7 +167,7 @@ public interface Observable<T> {
      */
     public static Observable<Integer> integers(int from) {
         return new ObservableImpl<Integer>(
-                new NatsSpliterator(from).toStream(), null);
+                new NatsSpliterator(from).getStream(), null);
     }
 
     /**
@@ -274,6 +275,16 @@ public interface Observable<T> {
      * @return instance of Observable
      */
     Observable<T> merge(Observable<? extends T> other);
+
+    /**
+     * This method zips current stream with another streams and creates new
+     * Observable of type Tuple
+     * 
+     * @param other
+     *            other stream
+     * @return instance of Observable
+     */
+    <U> Observable<Tuple> zip(Observable<? extends U> other);
 
     /**
      * Converts internal stream into parallel stream (underlying stream must

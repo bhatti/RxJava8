@@ -13,6 +13,7 @@ import com.plexobject.rx.Observable;
 import com.plexobject.rx.OnCompletion;
 import com.plexobject.rx.Subscription;
 import com.plexobject.rx.scheduler.Scheduler;
+import com.plexobject.rx.util.Tuple;
 
 /**
  * This is implementation of Observable that uses user-specified consumer
@@ -166,6 +167,11 @@ public class ObservableDelegate<T> implements Observable<T> {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public <U> Observable<Tuple> zip(Observable<? extends U> other) {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * This returns internal stream as a list
      * 
@@ -206,4 +212,5 @@ public class ObservableDelegate<T> implements Observable<T> {
     public Observable<Long> count() {
         throw new UnsupportedOperationException();
     }
+
 }

@@ -16,9 +16,12 @@ import org.slf4j.LoggerFactory;
 
 import com.plexobject.rx.Observable;
 import com.plexobject.rx.OnCompletion;
+import com.plexobject.rx.Streamable;
 import com.plexobject.rx.Subscription;
 import com.plexobject.rx.scheduler.Scheduler;
 import com.plexobject.rx.util.CancelableSpliterator;
+import com.plexobject.rx.util.Tuple;
+import com.plexobject.rx.util.TupleSpliterator;
 
 /**
  * This is default implementation of Observable that keeps data as stream
@@ -28,7 +31,7 @@ import com.plexobject.rx.util.CancelableSpliterator;
  * @param <T>
  *            type of subscription data
  */
-public class ObservableImpl<T> implements Observable<T> {
+public class ObservableImpl<T> implements Observable<T>, Streamable<T> {
     private static final Logger logger = LoggerFactory
             .getLogger(ObservableImpl.class);
 
@@ -92,6 +95,8 @@ public class ObservableImpl<T> implements Observable<T> {
      */
     @Override
     public Observable<T> subscribeOn(Scheduler scheduler) {
+        Objects.requireNonNull(scheduler);
+
         this.scheduler = scheduler;
         return this;
     }
@@ -111,6 +116,8 @@ public class ObservableImpl<T> implements Observable<T> {
      */
     @Override
     public Observable<T> filter(Predicate<? super T> predicate) {
+        Objects.requireNonNull(predicate);
+
         this.stream = stream.filter(predicate);
         return this;
     }
@@ -122,6 +129,8 @@ public class ObservableImpl<T> implements Observable<T> {
      */
     @Override
     public <R> Observable<R> map(Function<? super T, ? extends R> mapper) {
+        Objects.requireNonNull(mapper);
+
         Stream<R> newStream = stream.map(mapper);
         return new ObservableImpl<R>(newStream, error, scheduler);
     }
@@ -134,6 +143,8 @@ public class ObservableImpl<T> implements Observable<T> {
     @Override
     public <R> Observable<R> flatMap(
             Function<? super T, ? extends Stream<? extends R>> mapper) {
+        Objects.requireNonNull(mapper);
+
         Stream<R> newStream = stream.flatMap(mapper);
         return new ObservableImpl<R>(newStream, error, scheduler);
     }
@@ -171,6 +182,8 @@ public class ObservableImpl<T> implements Observable<T> {
      */
     @Override
     public Observable<T> sorted(Comparator<? super T> comparator) {
+        Objects.requireNonNull(comparator);
+
         this.stream = stream.sorted(comparator);
         return this;
     }
@@ -181,9 +194,41 @@ public class ObservableImpl<T> implements Observable<T> {
     @SuppressWarnings("unchecked")
     @Override
     public Observable<T> merge(Observable<? extends T> other) {
-        this.stream = Stream.concat(this.stream,
-                ((ObservableImpl<T>) other).stream);
-        return this;
+        Objects.requireNonNull(other);
+
+        if (other instanceof Streamable) {
+            this.stream = Stream.concat(this.stream,
+                    ((Streamable<T>) other).getStream());
+            return this;
+        } else {
+            throw new IllegalArgumentException(
+                    "Other observable is not streamable");
+        }
+    }
+
+    /**
+     * This method zips current stream with another streams and creates new
+     * Observable of type Tuple
+     * 
+     * @param other
+     *            other stream - if other type is of type Tuple then all
+     *            elements of that tuple are added to the result tuple
+     * @return instance of Observable
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <U> Observable<Tuple> zip(Observable<? extends U> other) {
+        Objects.requireNonNull(other);
+
+        if (other instanceof Streamable) {
+            TupleSpliterator<T, U> tupleSpliterator = new TupleSpliterator<T, U>(
+                    stream.spliterator(), ((Streamable<U>) other).getStream()
+                            .spliterator());
+            return new ObservableImpl<Tuple>(tupleSpliterator.getStream(), null);
+        } else {
+            throw new IllegalArgumentException(
+                    "Other observable is not streamable");
+        }
     }
 
     /**
@@ -320,4 +365,15 @@ public class ObservableImpl<T> implements Observable<T> {
         Stream<Long> countStream = Stream.of(stream.count());
         return new ObservableImpl<Long>(countStream, error, scheduler);
     }
+
+    /**
+     * This method returns underlying stream
+     * 
+     * @return
+     */
+    @Override
+    public Stream<T> getStream() {
+        return stream;
+    }
+
 }

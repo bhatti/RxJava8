@@ -12,6 +12,7 @@ import com.plexobject.rx.Observable;
 import com.plexobject.rx.OnCompletion;
 import com.plexobject.rx.Subscription;
 import com.plexobject.rx.scheduler.Scheduler;
+import com.plexobject.rx.util.Tuple;
 
 /**
  * This implementation of Observable is used to ignore subscription. This won't
@@ -47,6 +48,11 @@ public class ObservableNever<T> implements Observable<T> {
 
     @Override
     public Observable<T> merge(Observable<? extends T> other) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <U> Observable<Tuple> zip(Observable<? extends U> other) {
         throw new UnsupportedOperationException();
     }
 
@@ -126,4 +132,5 @@ public class ObservableNever<T> implements Observable<T> {
     public Observable<Long> count() {
         throw new UnsupportedOperationException();
     }
+
 }

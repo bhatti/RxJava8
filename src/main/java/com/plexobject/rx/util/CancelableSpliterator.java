@@ -10,9 +10,11 @@ import java.util.stream.StreamSupport;
 
 import com.plexobject.rx.Cancelable;
 import com.plexobject.rx.OnCompletion;
+import com.plexobject.rx.Streamable;
 import com.plexobject.rx.scheduler.Scheduler;
 
-public class CancelableSpliterator<T> implements Spliterator<T>, Cancelable {
+public class CancelableSpliterator<T> implements Spliterator<T>, Cancelable,
+        Streamable<T> {
     private final AtomicBoolean canceled = new AtomicBoolean();
     private Spliterator<T> delegate;
 
@@ -89,7 +91,7 @@ public class CancelableSpliterator<T> implements Spliterator<T>, Cancelable {
         }, this);
     }
 
-    public Stream<T> toStream() {
+    public Stream<T> getStream() {
         return StreamSupport.stream(this, true);
     }
 }

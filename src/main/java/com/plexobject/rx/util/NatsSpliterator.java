@@ -5,13 +5,15 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import com.plexobject.rx.Streamable;
+
 /**
  * This is a helper class for creating infinite natural numbers
  * 
  * @author Shahzad Bhatti
  *
  */
-public class NatsSpliterator implements Spliterator<Integer> {
+public class NatsSpliterator implements Spliterator<Integer>, Streamable<Integer> {
     private int number;
 
     public NatsSpliterator(int from) {
@@ -39,7 +41,7 @@ public class NatsSpliterator implements Spliterator<Integer> {
         return Spliterator.IMMUTABLE;
     }
 
-    public Stream<Integer> toStream() {
+    public Stream<Integer> getStream() {
         return StreamSupport.stream(this, false);
     }
 }

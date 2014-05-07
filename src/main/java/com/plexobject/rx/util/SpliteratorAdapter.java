@@ -6,14 +6,17 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import com.plexobject.rx.Streamable;
+
 /**
  * This is helper class that allows creating spliterator from an iterator
  * 
  * @author Shahzad Bhatti
  *
- * @param <T> type of subscription data
+ * @param <T>
+ *            type of subscription data
  */
-public class SpliteratorAdapter<T> implements Spliterator<T> {
+public class SpliteratorAdapter<T> implements Spliterator<T>, Streamable<T> {
     private final Iterator<T> it;
 
     public SpliteratorAdapter(Iterator<T> it) {
@@ -43,7 +46,7 @@ public class SpliteratorAdapter<T> implements Spliterator<T> {
         return Spliterator.IMMUTABLE;
     }
 
-    public Stream<T> toStream() {
+    public Stream<T> getStream() {
         return StreamSupport.stream(this, false);
     }
 }
