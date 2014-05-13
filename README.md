@@ -270,7 +270,7 @@ Observables supports basic filtering support as provided by Java Streams, e.g.
 ```
 
 
-### toSet - returns internal objects as list
+### toSet - returns internal objects as set
 ```java 
    Set<Integer> set = Observable.from(1, 2).merge(Observable.from(3, 4)).merge(Observable.just(3)).toSet();
    // This will return set containg 1, 2, 3, 4 (unordered and without any duplicates)
