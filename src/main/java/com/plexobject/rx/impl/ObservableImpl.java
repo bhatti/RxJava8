@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Spliterator;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -40,7 +41,7 @@ public class ObservableImpl<T> implements Observable<T>, Streamable<T> {
     private static final Scheduler defaultScheduler = Scheduler
             .newThreadPoolScheduler(8);
     private Scheduler scheduler;
-    private Spliterator<T> it;
+    private Spliterator<T> spliterator;
 
     public ObservableImpl(final Stream<T> stream, Throwable error) {
         this(stream, error, defaultScheduler);
@@ -84,7 +85,8 @@ public class ObservableImpl<T> implements Observable<T>, Streamable<T> {
         } else {
             SubscriptionObserver<T> subscription = new SubscriptionImpl<T>(
                     onNext, onError, onCompletion, null);
-            it = stream.spliterator();
+
+            spliterator = stream.spliterator();
             scheduler.scheduleBackgroundTask(s -> tick(s), subscription);
             return subscription;
         }
@@ -267,12 +269,16 @@ public class ObservableImpl<T> implements Observable<T>, Streamable<T> {
         if (error != null) {
             notifyError(subscription);
         } else {
-            if (it.tryAdvance(obj -> {
+            AtomicBoolean tickNext = new AtomicBoolean();
+            if (spliterator.tryAdvance(obj -> {
                 if (notifyData(subscription, obj)) {
+                    tickNext.set(true);
+                }
+            })) {
+                if (tickNext.get()) {
                     scheduler
                             .scheduleBackgroundTask(s -> tick(s), subscription);
                 }
-            })) {
             } else {
                 notifyCompleted(subscription);
             }

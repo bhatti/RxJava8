@@ -50,31 +50,35 @@ public class ObservableDelegate<T> implements Observable<T> {
         Objects.requireNonNull(onError);
         final SubscriptionObserver<T> subscription = new SubscriptionImpl<T>(
                 onNext, onError, onCompletion, null);
-        delegate.accept(new Observer<T>() {
-            private boolean hasError;
+        try {
+            delegate.accept(new Observer<T>() {
+                private boolean hasError;
 
-            @Override
-            public void onNext(T obj) {
-                try {
-                    subscription.onNext(obj);
-                } catch (Exception e) {
-                    hasError = true;
-                    subscription.onError(e);
+                @Override
+                public void onNext(T obj) {
+                    try {
+                        subscription.onNext(obj);
+                    } catch (Exception e) {
+                        hasError = true;
+                        subscription.onError(e);
+                    }
                 }
-            }
 
-            @Override
-            public void onError(Throwable error) {
-                subscription.onError(error);
-            }
-
-            @Override
-            public void onCompleted() {
-                if (!hasError) {
-                    subscription.onCompleted();
+                @Override
+                public void onError(Throwable error) {
+                    subscription.onError(error);
                 }
-            }
-        });
+
+                @Override
+                public void onCompleted() {
+                    if (!hasError) {
+                        subscription.onCompleted();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            subscription.onError(e);
+        }
         return subscription;
     }
 

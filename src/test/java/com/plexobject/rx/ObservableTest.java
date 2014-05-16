@@ -291,18 +291,4 @@ public class ObservableTest extends BaseObservableTest {
         assertNull(onError.get());
         assertEquals(0, onCompleted.get());
     }
-
-    @Test
-    public void testSubscribeCount() throws Exception {
-        Observable<Long> observable = Observable.from(1, 2, 3, 4, 5).count();
-
-        initLatch(2);
-        setupCallback(observable, null, true);
-        latch.await(100, TimeUnit.MILLISECONDS);
-
-        assertEquals(1, onNext.get());
-        assertNull(onError.get());
-        assertEquals(1, onCompleted.get());
-    }
-
 }
